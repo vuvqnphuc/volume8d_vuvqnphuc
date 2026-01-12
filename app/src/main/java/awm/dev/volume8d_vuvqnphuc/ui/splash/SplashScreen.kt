@@ -15,6 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -54,7 +56,16 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White),
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF000428),
+                        Color(0xFF004E92),
+                        Color(0xFF1BFFFF)
+                    ),
+                    start = Offset(0f, 0f)
+                )
+            ),
         contentAlignment = Alignment.Center,
     ) {
         LottieAnimation(

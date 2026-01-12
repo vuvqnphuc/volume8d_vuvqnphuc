@@ -88,7 +88,7 @@ fun AppMainNavHost(
             )
         }
         composable<MainRoute> {
-            MainScreen()
+            MainScreen {}
         }
     }
 }

@@ -21,7 +21,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun BottomNav(
+fun BottomNavigator(
     modifier: Modifier = Modifier,
     typeSelected: BottomNav = BottomNav.MUSIC,
     onClick: (BottomNav) -> Unit,
@@ -104,7 +104,7 @@ fun BottomNav(
 @Composable
 @Preview
 fun BottomNavP() {
-    BottomNav(
+    BottomNavigator(
         typeSelected = BottomNav.MUSIC,
         onClick = {}
     )
@@ -112,5 +112,5 @@ fun BottomNavP() {
 
 @Keep
 enum class BottomNav {
-    MUSIC, LISTMUSIC, CAMERA, VOLUME, SETTING
+    MUSIC, LISTMUSIC, VOLUME, SETTING
 }
