@@ -9,6 +9,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -50,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,7 +64,8 @@ import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 
 @Composable
 fun ListMusicScreen(
-    viewModel: AppMainViewModel = hiltViewModel()
+    viewModel: AppMainViewModel = hiltViewModel(),
+    onNavigateToPlayer: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val musicFiles by viewModel.musicFiles.collectAsState()
@@ -104,7 +107,7 @@ fun ListMusicScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "My Music",
+                text = stringResource(R.string.my_music),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -118,7 +121,7 @@ fun ListMusicScreen(
                     .fillMaxWidth()
                     .height(56.dp)
                     .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(20.dp)),
-                placeholder = { Text("Search songs...", color = Color.White.copy(alpha = 0.5f)) },
+                placeholder = { Text(stringResource(R.string.search_songs), color = Color.White.copy(alpha = 0.5f)) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color.White) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -144,7 +147,11 @@ fun ListMusicScreen(
             ) { music ->
                 MusicListItem(
                     music = music,
-                    onDelete = { viewModel.removeMusic(music) }
+                    onDelete = { viewModel.removeMusic(music) },
+                    onClick = {
+                        viewModel.playMusic(music)
+                        onNavigateToPlayer()
+                    }
                 )
             }
         }
@@ -152,7 +159,7 @@ fun ListMusicScreen(
 }
 
 @Composable
-fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
+fun MusicListItem(music: MusicFile, onDelete: () -> Unit, onClick: () -> Unit) {
     var offsetX by remember { mutableStateOf(0f) }
     val revealWidth = -240f // Khoảng diện tích lộ ra để chứa icon xóa (px)
     var isRemoving by remember { mutableStateOf(false) }
@@ -192,6 +199,7 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                 modifier = Modifier
                     .offset(x = (offsetX / 3).dp)
                     .fillMaxSize()
+                    .clickable { onClick() }
                     .draggable(
                         orientation = Orientation.Horizontal,
                         state = rememberDraggableState { delta ->

@@ -65,8 +65,26 @@ fun MainScreen(
             userScrollEnabled = false
         ) { page ->
             when (page) {
-                0 -> MusicScreen()
-                1 -> ListMusicScreen()
+                0 -> MusicScreen(
+                     onNavigateToList = {
+                         // Switch to List Tab (Index 1)
+                         // But MainScreen doesn't expose a way to change tab internally via state directly 
+                         // unless we use the scope and pagerState or callback.
+                         // Actually `changeIndexTab` is passed to MainScreen but not to the content.
+                         // Wait, `HorizontalPager` is controlled by `pagerState`.
+                         // We need to launch coroutine to scroll.
+                         // Or better: pass a callback up OR use pagerState.scrollToPage
+                         // Ideally MainScreen should handle this.
+                         // BUT `changeIndexTab` is a callback from parent. MainScreen controls pagerState via LaunchedEffect.
+                         // So we should call `changeIndexTab(1)`.
+                         changeIndexTab(1)
+                     }
+                )
+                1 -> ListMusicScreen(
+                    onNavigateToPlayer = {
+                        changeIndexTab(0)
+                    }
+                )
                 2 -> VolumeScreen()
                 3 -> SettingScreen()
             }
