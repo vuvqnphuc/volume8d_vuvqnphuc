@@ -58,11 +58,7 @@ fun SplashScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFF000428),
-                        Color(0xFF004E92),
-                        Color(0xFF1BFFFF)
-                    ),
+                    colors = listOf(Color(0xFFEE0979), Color(0xFFFF6A00)),
                     start = Offset(0f, 0f)
                 )
             ),

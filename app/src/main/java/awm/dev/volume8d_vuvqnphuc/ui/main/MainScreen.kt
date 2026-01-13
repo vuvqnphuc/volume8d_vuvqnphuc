@@ -53,11 +53,7 @@ fun MainScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFF000428),
-                        Color(0xFF004E92),
-                        Color(0xFF1BFFFF)
-                    ),
+                    colors = listOf(Color(0xFFEE0979), Color(0xFFFF6A00)),
                     start = Offset(0f, 0f)
                 )
             )
@@ -78,9 +74,7 @@ fun MainScreen(
         BottomNavigator(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.systemBars)
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 12.dp),
+                .windowInsetsPadding(WindowInsets.systemBars),
             onClick = { tab ->
                 val targetPage = when (tab) {
                     BottomNav.MUSIC -> 0

@@ -85,11 +85,7 @@ fun LanguageScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFF000428),
-                        Color(0xFF004E92),
-                        Color(0xFF1BFFFF)
-                    ),
+                    colors = listOf(Color(0xFFEE0979), Color(0xFFFF6A00)),
                     start = Offset(0f, 0f)
                 )
             )
@@ -134,7 +130,7 @@ fun LanguageScreen(
                 style = TextStyle(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.W700,
-                    color = Color.White,
+                    color = Color.Black,
                     textAlign = TextAlign.Start
                 )
             )
@@ -232,19 +228,19 @@ fun LanguageItem(
 ) {
     val borderBrush = remember(isSelected) {
         if (isSelected) {
-            Brush.linearGradient(listOf(Color.Green, Color.Red))
+            Brush.linearGradient(listOf(Color.Green, Color.Green))
         } else {
             Brush.linearGradient(
-                listOf(Color.White, Color.White)
+                listOf(Color.Black, Color.Black)
             )
         }
     }
 
     val bgBrush = remember(isSelected) {
         if (isSelected) {
-            Brush.linearGradient(listOf(Color.Black, Color.Black))
+            Brush.linearGradient(listOf(Color.Black,Color.Black, Color(0xFFEE0979)))
         } else {
-            Brush.linearGradient(listOf(Color(0xff1A2331), Color(0xff201B38)))
+            Brush.linearGradient(listOf(Color.Black,Color.Black))
         }
     }
 
