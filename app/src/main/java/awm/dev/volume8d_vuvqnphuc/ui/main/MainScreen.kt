@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNav
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNavigator
@@ -40,6 +41,8 @@ fun MainScreen(
         3 -> BottomNav.SETTING
         else -> BottomNav.MUSIC
     }
+
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -72,7 +75,23 @@ fun MainScreen(
 
                 2 -> VolumeScreen()
                 3 -> SettingScreen(
-                    onLanguageClick = onNavigateToLanguage
+                    onLanguageClick = onNavigateToLanguage,
+                    onShareClick = {
+                        val sendIntent = android.content.Intent().apply {
+                            action = android.content.Intent.ACTION_SEND
+                            putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=${context.packageName}")
+                            type = "text/plain"
+                        }
+                        context.startActivity(android.content.Intent.createChooser(sendIntent, null))
+                    },
+                    onRateClick = {
+                        val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("market://details?id=${context.packageName}"))
+                        try {
+                            context.startActivity(intent)
+                        } catch (e: android.content.ActivityNotFoundException) {
+                            context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")))
+                        }
+                    }
                 )
             }
         }
