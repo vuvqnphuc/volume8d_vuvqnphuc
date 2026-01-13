@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.util.fastFirstOrNull
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -93,7 +94,11 @@ fun AppMainNavHost(
             )
         }
         composable<MainRoute> {
-            MainScreen {}
+            var selectedIndex by remember { mutableStateOf(0) }
+            MainScreen(
+                currentIndexTab = selectedIndex,
+                changeIndexTab = { selectedIndex = it }
+            )
         }
     }
 }

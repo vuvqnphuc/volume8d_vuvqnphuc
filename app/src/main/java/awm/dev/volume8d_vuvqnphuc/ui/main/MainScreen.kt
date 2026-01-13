@@ -38,15 +38,16 @@ fun MainScreen(
     currentIndexTab: Int = 0,
     changeIndexTab: (Int) -> Unit
 ) {
-    val pagerState = rememberPagerState(initialPage = currentIndexTab) { 5 }
-    val scope = rememberCoroutineScope()
-    val selectedTab = when (pagerState.currentPage) {
+    val pagerState = rememberPagerState(initialPage = currentIndexTab) { 4 }
+
+    val selectedTab = when (currentIndexTab) {
         0 -> BottomNav.MUSIC
         1 -> BottomNav.LISTMUSIC
         2 -> BottomNav.VOLUME
         3 -> BottomNav.SETTING
         else -> BottomNav.MUSIC
     }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -88,23 +89,13 @@ fun MainScreen(
                     BottomNav.SETTING -> 3
                 }
                 changeIndexTab(targetPage)
-                scope.launch {
-                    pagerState.animateScrollToPage(targetPage)
-                }
             },
             typeSelected = selectedTab,
         )
     }
+
     LaunchedEffect(currentIndexTab) {
         pagerState.animateScrollToPage(currentIndexTab)
-    }
-    Column(
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-
-    ) {
-        Text("Main")
     }
 }
 
