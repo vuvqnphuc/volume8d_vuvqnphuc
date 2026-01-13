@@ -1,7 +1,6 @@
 package awm.dev.volume8d_vuvqnphuc.ui.main.music
 
 import androidx.compose.foundation.background
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
@@ -34,11 +34,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
+import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -47,8 +48,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
 fun MusicScreen(
-    viewModel: AppMainViewModel = hiltViewModel(),
-    onNavigateToList: () -> Unit = {}
+    viewModel: MainViewModel = hiltViewModel(),
+    onNavigateToList: () -> Unit = {},
 ) {
     val currentMusic by viewModel.currentMusic.collectAsState()
     val isPlaying by viewModel.isPlaying.collectAsState()
@@ -118,7 +119,9 @@ fun MusicScreen(
                 textAlign = TextAlign.Center,
                 fontSize = 26.sp,
                 color = Color.White,
-                fontStyle = FontStyle.Italic
+                fontStyle = FontStyle.Italic,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(40.dp))
             ControlPanelMusic(
@@ -150,7 +153,7 @@ fun ControlPanelMusic(
     onPrevious: () -> Unit,
     onSeek: (Float) -> Unit,
     onRepeat: () -> Unit,
-    onListClick: () -> Unit
+    onListClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier

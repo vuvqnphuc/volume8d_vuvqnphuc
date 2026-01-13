@@ -97,7 +97,10 @@ fun AppMainNavHost(
             var selectedIndex by remember { mutableStateOf(0) }
             MainScreen(
                 currentIndexTab = selectedIndex,
-                changeIndexTab = { selectedIndex = it }
+                changeIndexTab = { selectedIndex = it },
+                onNavigateToLanguage = {
+                    navAction.navToLanguageScreen(showFrom = MainRoute.toString())
+                }
             )
         }
     }

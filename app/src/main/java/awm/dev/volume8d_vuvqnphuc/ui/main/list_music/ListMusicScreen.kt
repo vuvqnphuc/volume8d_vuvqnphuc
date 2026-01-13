@@ -9,8 +9,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -58,14 +58,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
 import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
+import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
 @Composable
 fun ListMusicScreen(
-    viewModel: AppMainViewModel = hiltViewModel(),
-    onNavigateToPlayer: () -> Unit = {}
+    viewModel: MainViewModel = hiltViewModel(),
+    onNavigateToPlayer: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val musicFiles by viewModel.musicFiles.collectAsState()
@@ -86,7 +86,11 @@ fun ListMusicScreen(
             Manifest.permission.READ_EXTERNAL_STORAGE
         }
 
-        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             viewModel.loadMusic()
         } else {
             permissionLauncher.launch(permission)
@@ -121,8 +125,19 @@ fun ListMusicScreen(
                     .fillMaxWidth()
                     .height(56.dp)
                     .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(20.dp)),
-                placeholder = { Text(stringResource(R.string.search_songs), color = Color.White.copy(alpha = 0.5f)) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color.White) },
+                placeholder = {
+                    Text(
+                        stringResource(R.string.search_songs),
+                        color = Color.White.copy(alpha = 0.5f)
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Search,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -139,7 +154,11 @@ fun ListMusicScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp, start = 24.dp, end = 24.dp)
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                bottom = 100.dp,
+                start = 24.dp,
+                end = 24.dp
+            )
         ) {
             items(
                 items = musicFiles.filter { it.name.contains(searchQuery, ignoreCase = true) },

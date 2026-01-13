@@ -47,11 +47,11 @@ import awm.dev.volume8d_vuvqnphuc.R
 
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
+import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
 @Composable
 fun VolumeScreen(
-    viewModel: AppMainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val masterVolume by viewModel.masterVolume.collectAsState()
     val bassBoost by viewModel.bassStrength.collectAsState()
