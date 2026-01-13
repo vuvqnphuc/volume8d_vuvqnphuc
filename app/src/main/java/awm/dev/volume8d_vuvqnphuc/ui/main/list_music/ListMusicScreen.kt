@@ -1,5 +1,10 @@
 package awm.dev.volume8d_vuvqnphuc.ui.main.list_music
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
@@ -30,45 +35,59 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
-
-data class MusicFile(val id: Int, val name: String, val duration: String, val author: String)
+import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 
 @Composable
-fun ListMusicScreen() {
-    // Demo data
-    val musicFiles = remember {
-        mutableStateListOf(
-            MusicFile(1, "Bohemian Rhapsody", "05:55", "Queen"),
-            MusicFile(2, "Hotel California", "06:30", "Eagles"),
-            MusicFile(3, "Imagine", "03:03", "John Lennon"),
-            MusicFile(4, "Shape of You", "03:53", "Ed Sheeran"),
-            MusicFile(5, "Blinding Lights", "03:20", "The Weeknd"),
-            MusicFile(6, "Stay", "02:21", "The Kid LAROI"),
-            MusicFile(7, "Levitating", "03:23", "Dua Lipa"),
-            MusicFile(8, "Peaches", "03:18", "Justin Bieber"),
-            MusicFile(9, "Good 4 U", "02:58", "Olivia Rodrigo"),
-            MusicFile(10, "Bad Guy", "03:14", "Billie Eilish"),
-        )
+fun ListMusicScreen(
+    viewModel: AppMainViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    val musicFiles by viewModel.musicFiles.collectAsState()
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                viewModel.loadMusic()
+            }
+        }
+    )
+
+    LaunchedEffect(Unit) {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_AUDIO
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+
+        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+            viewModel.loadMusic()
+        } else {
+            permissionLauncher.launch(permission)
+        }
     }
 
     var searchQuery by remember { mutableStateOf("") }
@@ -78,7 +97,6 @@ fun ListMusicScreen() {
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        // Upper Title & Search
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,10 +110,7 @@ fun ListMusicScreen() {
                 color = Color.White,
                 letterSpacing = 1.sp
             )
-            
             Spacer(modifier = Modifier.height(16.dp))
-            
-            // Search Bar
             TextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
@@ -118,8 +133,6 @@ fun ListMusicScreen() {
                 shape = RoundedCornerShape(20.dp)
             )
         }
-
-        // List of Music Files
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -131,7 +144,7 @@ fun ListMusicScreen() {
             ) { music ->
                 MusicListItem(
                     music = music,
-                    onDelete = { musicFiles.remove(music) }
+                    onDelete = { viewModel.removeMusic(music) }
                 )
             }
         }
@@ -143,8 +156,6 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
     var offsetX by remember { mutableStateOf(0f) }
     val revealWidth = -240f // Khoảng diện tích lộ ra để chứa icon xóa (px)
     var isRemoving by remember { mutableStateOf(false) }
-
-    // Animation xử lý việc thu nhỏ mục khi xóa
     AnimatedVisibility(
         visible = !isRemoving,
         exit = shrinkVertically(animationSpec = tween(300)) + fadeOut()
@@ -154,7 +165,6 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                 .fillMaxWidth()
                 .height(82.dp)
         ) {
-            // Lớp nền phía sau chứa Icon Xóa
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -178,22 +188,19 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                 }
             }
 
-            // Lớp nội dung phía trên có thể kéo được
             Row(
                 modifier = Modifier
-                    .offset(x = (offsetX / 3).dp) // Chia tỷ lệ để khớp với cảm giác kéo dp
+                    .offset(x = (offsetX / 3).dp)
                     .fillMaxSize()
                     .draggable(
                         orientation = Orientation.Horizontal,
                         state = rememberDraggableState { delta ->
                             val newOffset = offsetX + delta
-                            // Chỉ cho phép vuốt sang trái (nút âm) và giới hạn khoảng cách
                             if (newOffset <= 0 && newOffset >= revealWidth * 1.5f) {
                                 offsetX = newOffset
                             }
                         },
                         onDragStopped = {
-                            // Tự động hít (snap) về các vị trí 0 hoặc revealWidth
                             offsetX = if (offsetX < revealWidth / 2) revealWidth else 0f
                         }
                     )
@@ -201,7 +208,6 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Music Icon
                 Box(
                     modifier = Modifier
                         .size(50.dp)
@@ -218,7 +224,6 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
 
                 Spacer(modifier = Modifier.width(16.dp))
 
-                // Info
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = music.name,
@@ -227,14 +232,8 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                         fontWeight = FontWeight.Bold,
                         maxLines = 1
                     )
-                    Text(
-                        text = music.author,
-                        color = Color.Black.copy(alpha = 0.6f),
-                        fontSize = 13.sp
-                    )
                 }
 
-                // Duration
                 Text(
                     text = music.duration,
                     color = Color.Black.copy(alpha = 0.5f),

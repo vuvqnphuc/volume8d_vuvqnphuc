@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -172,7 +173,7 @@ fun ControlPanelMusic() {
             // Icon Lặp lại
             IconButton(onClick = { /* Repeat */ }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_repeat),
+                    painter = painterResource(id = R.drawable.ic_select_repeat),
                     contentDescription = "Repeat",
                     tint = Color.White.copy(alpha = 0.8f),
                     modifier = Modifier.size(24.dp)
@@ -182,7 +183,7 @@ fun ControlPanelMusic() {
             // Icon Back
             IconButton(onClick = { /* Back */ }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_music),
+                    painter = painterResource(id = R.drawable.ic_next_back),
                     contentDescription = "Back",
                     tint = Color.White,
                     modifier = Modifier.size(32.dp)
@@ -202,7 +203,7 @@ fun ControlPanelMusic() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_music),
+                        painter = painterResource(id = R.drawable.ic_pause),
                         contentDescription = "Play",
                         tint = Color.Black,
                         modifier = Modifier.size(32.dp)
@@ -213,10 +214,12 @@ fun ControlPanelMusic() {
             // Icon Next
             IconButton(onClick = { /* Next */ }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_music),
+                    painter = painterResource(id = R.drawable.ic_next_back),
                     contentDescription = "Next",
                     tint = Color.White,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier
+                        .size(32.dp)
+                        .scale(scaleX = -1f, scaleY = 1f)
                 )
             }
 
