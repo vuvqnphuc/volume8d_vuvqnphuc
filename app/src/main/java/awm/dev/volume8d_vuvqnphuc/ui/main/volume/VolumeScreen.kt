@@ -38,19 +38,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import awm.dev.volume8d_vuvqnphuc.R
 
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
+
 @Composable
-fun VolumeScreen() {
-    var masterVolume by remember { mutableFloatStateOf(1.0f) } // 0.0 to 2.0 (0% to 200%)
-    var bassBoost by remember { mutableFloatStateOf(0.5f) }
-    var surroundSound by remember { mutableFloatStateOf(0.3f) }
-    var vocalBoost by remember { mutableFloatStateOf(0.0f) }
-    var is8DEnabled by remember { mutableStateOf(false) }
+fun VolumeScreen(
+    viewModel: AppMainViewModel = hiltViewModel()
+) {
+    val masterVolume by viewModel.masterVolume.collectAsState()
+    val bassBoost by viewModel.bassStrength.collectAsState()
+    val vocalBoost by viewModel.vocalStrength.collectAsState()
+    val is8DEnabled by viewModel.is8DEnabled.collectAsState()
+    val surroundSound by viewModel.surroundStrength.collectAsState()
 
     Column(
         modifier = Modifier
@@ -65,7 +72,7 @@ fun VolumeScreen() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Audio Booster",
+                text = stringResource(R.string.audio_booster),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -82,17 +89,15 @@ fun VolumeScreen() {
         ) {
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Main Volume Visualization (Large Hub)
             MasterVolumeControl(
                 volume = masterVolume,
-                onVolumeChange = { masterVolume = it }
+                onVolumeChange = { viewModel.setMasterVolume(it) }
             )
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Bass & Sound Effects Section
             Text(
-                text = "Sound Enhancements",
+                text = stringResource(R.string.sound_enhancements),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White.copy(alpha = 0.9f),
@@ -100,40 +105,37 @@ fun VolumeScreen() {
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-
+            // âm trầm
             EffectSlider(
-                label = "Bass Boost",
-                iconResId = R.drawable.ic_volume, // Placeholder icon
+                label = stringResource(R.string.bass_boost),
+                iconResId = R.drawable.ic_volume,
                 value = bassBoost,
-                onValueChange = { bassBoost = it }
+                onValueChange = { viewModel.setBassStrength(it) }
             )
-
             Spacer(modifier = Modifier.height(16.dp))
-
+            // độ rõ âm thanh
             EffectSlider(
-                label = "3D Surround",
-                iconResId = R.drawable.ic_music, // Placeholder icon
-                value = surroundSound,
-                onValueChange = { surroundSound = it }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            EffectSlider(
-                label = "Vocal Clarity",
-                iconResId = R.drawable.ic_list_music, // Placeholder icon
+                label = stringResource(R.string.sound_transmission),
+                iconResId = R.drawable.ic_music,
                 value = vocalBoost,
-                onValueChange = { vocalBoost = it }
+                onValueChange = { viewModel.setVocalStrength(it) }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Special 8D Audio Switch
+            // Special 8D Audio Switch bật công tắc này thì âm thanh di chuyển chậm trái phải như âm thanh 8D như hiện nay
             Special8DControl(
                 isEnabled = is8DEnabled,
-                onToggle = { is8DEnabled = it }
+                onToggle = { viewModel.set8DEnabled(it) }
             )
-
+            Spacer(modifier = Modifier.height(16.dp))
+            // chỉ sử dụng khi công tắc bật
+            EffectSlider(
+                label = "8D Surround",
+                iconResId = R.drawable.ic_head_phones,
+                value = surroundSound,
+                onValueChange = { viewModel.setSurroundStrength(it) }
+            )
             Spacer(modifier = Modifier.height(100.dp))
         }
     }
@@ -163,13 +165,15 @@ fun Special8DControl(
                     modifier = Modifier
                         .size(48.dp)
                         .background(
-                            color = if (isEnabled) Color(0xFFFFD700).copy(alpha = 0.2f) else Color.White.copy(alpha = 0.1f),
+                            color = if (isEnabled) Color(0xFFFFD700).copy(alpha = 0.2f) else Color.White.copy(
+                                alpha = 0.1f
+                            ),
                             shape = CircleShape
                         ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_music),
+                        painter = painterResource(id = R.drawable.ic_head_phones),
                         contentDescription = "8D Audio",
                         tint = if (isEnabled) Color(0xFFFFD700) else Color.White,
                         modifier = Modifier.size(24.dp)
@@ -238,10 +242,12 @@ fun MasterVolumeControl(
                         text = "$percentage%",
                         fontSize = 48.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        color = if (percentage > 100) Color(0xFFFF4E50) else Color.White
+                        color = if (percentage > 100) Color.Red else Color.White
                     )
                     Text(
-                        text = if (percentage == 0) "MUTE" else if (percentage > 100) "BOOST" else "VOLUME",
+                        text = if (percentage == 0) stringResource(R.string.mute) else if (percentage > 100) stringResource(
+                            R.string.boost
+                        ) else stringResource(R.string.volume),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White.copy(alpha = 0.6f)

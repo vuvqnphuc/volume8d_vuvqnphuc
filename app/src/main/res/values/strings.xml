@@ -5,4 +5,11 @@
     <string name="no_music_selected">No Music Selected</string>
     <string name="my_music">My Music</string>
     <string name="search_songs">Search songs...</string>
+    <string name="audio_booster">Audio Booster</string>
+    <string name="sound_enhancements">Sound Enhancements</string>
+    <string name="mute">MUTE</string>
+    <string name="boost">BOOST</string>
+    <string name="volume">VOLUME</string>
+    <string name="bass_boost">Bass Boost</string>
+    <string name="sound_transmission">sound transmission</string>
 </resources>
