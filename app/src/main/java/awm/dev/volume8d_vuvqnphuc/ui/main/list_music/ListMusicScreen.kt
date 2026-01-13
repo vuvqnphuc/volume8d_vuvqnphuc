@@ -197,7 +197,7 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                             offsetX = if (offsetX < revealWidth / 2) revealWidth else 0f
                         }
                     )
-                    .background(Color.Green, RoundedCornerShape(20.dp))
+                    .background(Color.White, RoundedCornerShape(20.dp))
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -211,7 +211,7 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_music),
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = Color.Black,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -222,14 +222,14 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = music.name,
-                        color = Color.White,
+                        color = Color.Black,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1
                     )
                     Text(
                         text = music.author,
-                        color = Color.White.copy(alpha = 0.6f),
+                        color = Color.Black.copy(alpha = 0.6f),
                         fontSize = 13.sp
                     )
                 }
@@ -237,7 +237,7 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit) {
                 // Duration
                 Text(
                     text = music.duration,
-                    color = Color.White.copy(alpha = 0.5f),
+                    color = Color.Black.copy(alpha = 0.5f),
                     fontSize = 12.sp
                 )
             }
