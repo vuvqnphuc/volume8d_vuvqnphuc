@@ -32,7 +32,7 @@ fun BottomNavigator(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(5f)
-            .background(color = Color.Transparent)
+            .background(color = Color(0xFFFF6A00))
     ) {
         Box(
             modifier = Modifier

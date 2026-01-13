@@ -1,4 +1,7 @@
 package awm.dev.volume8d_vuvqnphuc.component
 
-class TopbarApp {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun TopbarApp() {
 }

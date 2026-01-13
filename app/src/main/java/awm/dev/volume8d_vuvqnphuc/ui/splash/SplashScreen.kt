@@ -41,7 +41,7 @@ fun SplashScreen(
     nextScreen: () -> Unit = {}
 ) {
     LaunchedEffect(Unit) {
-        delay(10000)
+        delay(5000)
         nextScreen()
     }
     val animLoad by rememberLottieComposition(
