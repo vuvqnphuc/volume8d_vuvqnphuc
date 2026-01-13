@@ -7,6 +7,7 @@ import awm.dev.volume8d_vuvqnphuc.data.local.LANG
 object ManagerSaveLocal {
     private const val PREF_NAME = "gps_preferences"
     private const val KEY_LANGUAGE = "app_language"
+    private const val KEY_FIRST_OPEN = "is_first_open"
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -25,5 +26,12 @@ object ManagerSaveLocal {
         } catch (e: IllegalArgumentException) {
             null
         }
+    }
+    fun setFirstOpen(isFirstOpen: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_FIRST_OPEN, isFirstOpen).apply()
+    }
+
+    fun getFirstOpen(): Boolean {
+        return sharedPreferences.getBoolean(KEY_FIRST_OPEN, true)
     }
 }

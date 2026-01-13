@@ -44,7 +44,11 @@ fun AppMainNavHost(
         composable<SplashRoute> {
             SplashScreen(
                 nextScreen = {
-                    navAction.navToLanguageScreen(showFrom = SplashRoute.toString())
+                    if (ManagerSaveLocal.getFirstOpen()){
+                        navAction.navToLanguageScreen(showFrom = SplashRoute.toString())
+                    }else{
+                        navAction.navToMainScreen()
+                    }
                 }
             )
         }
@@ -79,6 +83,7 @@ fun AppMainNavHost(
                     }
 
                     if (route.showFrom == SplashRoute.toString()) {
+                        ManagerSaveLocal.setFirstOpen(false)
                         navController.popBackStack()
                         navAction.navToMainScreen()
                     } else {
