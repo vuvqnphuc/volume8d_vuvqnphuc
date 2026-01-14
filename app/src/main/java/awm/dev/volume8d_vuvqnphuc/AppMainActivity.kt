@@ -4,16 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import awm.dev.volume8d_vuvqnphuc.ui.theme.Volume8d_vuvqnphucTheme
+import awm.dev.volume8d_vuvqnphuc.component.DialogCheckInternet
+import awm.dev.volume8d_vuvqnphuc.utils.internet.ConnectivityObserver
 import awm.dev.volume8d_vuvqnphuc.utils.nav.NavAction
 import awm.dev.volume8d_vuvqnphuc.utils.nav.SplashRoute
 import awm.dev.volume8d_vuvqnphuc.utils.system.SystemUiManager
@@ -28,12 +25,27 @@ class AppMainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val navAction = remember(navController) { NavAction(navController) }
 
+            val appViewModel: AppMainViewModel = hiltViewModel()
+            val networkStatus by appViewModel.networkStatus.collectAsState(initial = ConnectivityObserver.Status.Available)
+
             AppMainNavHost(
                 navController = navController,
                 navAction = navAction,
                 startRouter = SplashRoute,
                 context = this
             )
+
+            if (networkStatus != ConnectivityObserver.Status.Available) {
+                DialogCheckInternet(
+                    onDismissRequest = {},
+                    onTryAgain = {
+                        appViewModel.refreshNetworkStatus()
+                    },
+                    onGoToSetting = {
+                        startActivity(android.content.Intent(android.provider.Settings.ACTION_WIFI_SETTINGS))
+                    }
+                )
+            }
         }
     }
 
