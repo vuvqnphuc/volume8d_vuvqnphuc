@@ -47,11 +47,14 @@ import awm.dev.volume8d_vuvqnphuc.R
 
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
+import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
 @Composable
 fun VolumeScreen(
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    appMainViewModel: AppMainViewModel=hiltViewModel()
 ) {
     val masterVolume by viewModel.masterVolume.collectAsState()
     val bassBoost by viewModel.bassStrength.collectAsState()
@@ -64,6 +67,13 @@ fun VolumeScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
+        val BannerVolume = appMainViewModel.getBannerVolume()
+        if (appMainViewModel.isCheckADS() && BannerVolume.isNotEmpty()) {
+            BannerAdView(
+                adUnitId = BannerVolume,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         // Upper Title
         Box(
             modifier = Modifier

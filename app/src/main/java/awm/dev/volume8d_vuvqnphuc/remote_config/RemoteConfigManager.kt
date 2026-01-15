@@ -20,7 +20,10 @@ class RemoteConfigManager @Inject constructor() {
         remoteConfig.setConfigSettingsAsync(configSettings)
         val defaults = mapOf(
             "isCheckADS" to true,
-            "banner_main" to "",
+            "banner_music" to "",
+            "banner_list_music" to "",
+            "banner_volume" to "",
+            "banner_setting" to "",
         )
         remoteConfig.setDefaultsAsync(defaults)
     }
@@ -31,20 +34,30 @@ class RemoteConfigManager @Inject constructor() {
         remoteConfig.fetchAndActivate()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val updated = task.result
-                    Log.d("RemoteConfig", "Fetch success: $updated")
+                    Log.d("RemoteConfig", "✅ KẾT NỐI FIREBASE THÀNH CÔNG")
                     onComplete(true)
                 } else {
                     val exception = task.exception
-                    Log.e("RemoteConfig", "Fetch failed: ${exception?.message}")
+                    Log.e("RemoteConfig", "⛔  KẾT NỐI FIREBASE THẤT BẠI : ${exception?.message}")
                     onComplete(false)
                 }
             }
     }
 
-    fun getBannerMain(): String {
-        val adId = remoteConfig.getString("banner_main")
-        Log.d("banner_main", "banner_main: $adId")
-        return adId
+    fun setBannerMusic(): String {
+        val BannerMusic = remoteConfig.getString("banner_music")
+        return BannerMusic
+    }
+    fun setBannerListMusic(): String{
+        val BannerListMusic = remoteConfig.getString("banner_list_music")
+        return BannerListMusic
+    }
+    fun setBannerVolume(): String{
+        val BannerVolume = remoteConfig.getString("banner_volume")
+        return BannerVolume
+    }
+    fun setBannerSetting(): String{
+        val BannerSetting = remoteConfig.getString("banner_setting")
+        return BannerSetting
     }
 }

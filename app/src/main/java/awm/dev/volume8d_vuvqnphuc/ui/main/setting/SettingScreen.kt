@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
@@ -38,19 +39,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
+import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
 
 @Composable
 fun SettingScreen(
     onLanguageClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
-    onRateClick: () -> Unit = {}
+    onRateClick: () -> Unit = {},
+    appMainViewModel: AppMainViewModel= hiltViewModel()
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
     ) {
+        val BannerSetting = appMainViewModel.getBannerSetting()
+        if (appMainViewModel.isCheckADS() && BannerSetting.isNotEmpty()) {
+            BannerAdView(
+                adUnitId = BannerSetting,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         // Upper Title
         Box(
             modifier = Modifier
@@ -59,7 +71,7 @@ fun SettingScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Settings",
+                text = stringResource(R.string.settings),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -77,7 +89,7 @@ fun SettingScreen(
                 
                 // Group: Preferences
                 Text(
-                    text = "Preferences",
+                    text = stringResource(R.string.preferences),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White.copy(alpha = 0.6f),
@@ -86,9 +98,9 @@ fun SettingScreen(
                 
                 SettingCard {
                     SettingItem(
-                        icon = Icons.Default.Send,
-                        title = "Language",
-                        subtitle = "Select your preferred language",
+                        icon = Icons.Default.Menu,
+                        title = stringResource(R.string.language),
+                        subtitle = stringResource(R.string.select_your_preferred_language),
                         onClick = onLanguageClick
                     )
                 }
@@ -97,7 +109,7 @@ fun SettingScreen(
 
                 // Group: Support & Community
                 Text(
-                    text = "Support & Community",
+                    text = stringResource(R.string.support_community),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White.copy(alpha = 0.6f),
@@ -108,8 +120,8 @@ fun SettingScreen(
                     Column {
                         SettingItem(
                             icon = Icons.Default.Share,
-                            title = "Share App",
-                            subtitle = "Invite your friends to use",
+                            title = stringResource(R.string.share_app),
+                            subtitle = stringResource(R.string.invite_your_friends_to_use),
                             onClick = onShareClick
                         )
                         HorizontalDivider(
@@ -119,8 +131,8 @@ fun SettingScreen(
                         )
                         SettingItem(
                             icon = Icons.Default.Star,
-                            title = "Rate App",
-                            subtitle = "Support us with 5 stars",
+                            title = stringResource(R.string.rate_app),
+                            subtitle = stringResource(R.string.support_us_with_5_stars),
                             onClick = onRateClick
                         )
                     }

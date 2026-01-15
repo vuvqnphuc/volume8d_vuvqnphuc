@@ -1,5 +1,6 @@
 package awm.dev.volume8d_vuvqnphuc.ui.main.music
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +39,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
+import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -49,6 +53,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 @Composable
 fun MusicScreen(
     viewModel: MainViewModel = hiltViewModel(),
+    appMainViewModel: AppMainViewModel = hiltViewModel(),
     onNavigateToList: () -> Unit = {},
 ) {
     val currentMusic by viewModel.currentMusic.collectAsState()
@@ -71,6 +76,13 @@ fun MusicScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
+        val BannerMusic = appMainViewModel.getBannerMusic()
+        if (appMainViewModel.isCheckADS() && BannerMusic.isNotEmpty()) {
+            BannerAdView(
+                adUnitId = BannerMusic,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

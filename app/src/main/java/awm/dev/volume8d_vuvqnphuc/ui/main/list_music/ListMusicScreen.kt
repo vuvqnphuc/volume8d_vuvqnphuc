@@ -58,13 +58,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
+import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
 import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
 @Composable
 fun ListMusicScreen(
     viewModel: MainViewModel = hiltViewModel(),
+    appMainViewModel: AppMainViewModel = hiltViewModel(),
     onNavigateToPlayer: () -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -110,13 +113,27 @@ fun ListMusicScreen(
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = stringResource(R.string.my_music),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                letterSpacing = 1.sp
-            )
+            val BannerListMusic = appMainViewModel.getBannerListMusic()
+            if (appMainViewModel.isCheckADS() && BannerListMusic.isNotEmpty()) {
+                BannerAdView(
+                    adUnitId = BannerListMusic,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.my_music),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    letterSpacing = 1.sp
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
                 value = searchQuery,

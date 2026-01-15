@@ -1,5 +1,6 @@
 package awm.dev.volume8d_vuvqnphuc
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import awm.dev.volume8d_vuvqnphuc.remote_config.RemoteConfigManager
@@ -16,14 +17,17 @@ class AppMainViewModel @Inject constructor(
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
     private val remoteConfigManager: RemoteConfigManager
 ) : ViewModel() {
+
     init {
         fetchRemoteConfig()
     }
+
     private fun fetchRemoteConfig() {
         remoteConfigManager.fetchValues { success ->
-            android.util.Log.d("AppViewModel", "RemoteConfig fetch completed: $success")
+            Log.d("AppViewModel", "RemoteConfig fetch completed: $success")
         }
     }
+
     private val _networkStatus = kotlinx.coroutines.flow.MutableStateFlow(
         if (awm.dev.volume8d_vuvqnphuc.utils.internet.isNetworkConnected(context))
             ConnectivityObserver.Status.Available
@@ -48,6 +52,9 @@ class AppMainViewModel @Inject constructor(
     }
     // ADS
     fun isCheckADS(): Boolean = remoteConfigManager.isCheckADS()
-    fun getBannerMain(): String = remoteConfigManager.getBannerMain()
+    fun getBannerMusic(): String = remoteConfigManager.setBannerMusic()
+    fun getBannerListMusic(): String = remoteConfigManager.setBannerListMusic()
+    fun getBannerVolume(): String = remoteConfigManager.setBannerVolume()
+    fun getBannerSetting(): String = remoteConfigManager.setBannerSetting()
 }
 

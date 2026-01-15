@@ -3,12 +3,13 @@ package awm.dev.volume8d_vuvqnphuc.ui.main
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -39,7 +40,6 @@ fun MainScreen(
     currentIndexTab: Int = 0,
     changeIndexTab: (Int) -> Unit,
     onNavigateToLanguage: () -> Unit = {},
-    viewModel: AppMainViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState(initialPage = currentIndexTab) { 4 }
 
@@ -104,31 +104,26 @@ fun MainScreen(
                 )
             }
         }
-        val adUnitId = viewModel.getBannerMain()
-        if (viewModel.isCheckADS() && adUnitId.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(20.dp))
-            BannerAdView(
-                adUnitId = adUnitId,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Log.d("adUnitId", "sdasdasda:$adUnitId ")
-            Spacer(modifier = Modifier.height(20.dp))
-        }
-        BottomNavigator(
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.systemBars),
-            onClick = { tab ->
-                val targetPage = when (tab) {
-                    BottomNav.MUSIC -> 0
-                    BottomNav.LISTMUSIC -> 1
-                    BottomNav.VOLUME -> 2
-                    BottomNav.SETTING -> 3
-                }
-                changeIndexTab(targetPage)
-            },
-            typeSelected = selectedTab,
-        )
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .background(Color.Transparent)
+        ) {
+            BottomNavigator(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { tab ->
+                    val targetPage = when (tab) {
+                        BottomNav.MUSIC -> 0
+                        BottomNav.LISTMUSIC -> 1
+                        BottomNav.VOLUME -> 2
+                        BottomNav.SETTING -> 3
+                    }
+                    changeIndexTab(targetPage)
+                },
+                typeSelected = selectedTab,
+            )
+        }
     }
 
     LaunchedEffect(currentIndexTab) {
