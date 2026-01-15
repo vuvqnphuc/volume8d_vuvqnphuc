@@ -20,10 +20,15 @@ class RemoteConfigManager @Inject constructor() {
         remoteConfig.setConfigSettingsAsync(configSettings)
         val defaults = mapOf(
             "isCheckADS" to true,
+            // OPEN APP
+            "open_app" to "",
+            // BANNER
             "banner_music" to "",
             "banner_list_music" to "",
             "banner_volume" to "",
             "banner_setting" to "",
+            // INTER
+            "inter_list_music_menu" to ""
         )
         remoteConfig.setDefaultsAsync(defaults)
     }
@@ -43,7 +48,7 @@ class RemoteConfigManager @Inject constructor() {
                 }
             }
     }
-
+    // BANNER
     fun setBannerMusic(): String {
         val BannerMusic = remoteConfig.getString("banner_music")
         return BannerMusic
@@ -59,5 +64,10 @@ class RemoteConfigManager @Inject constructor() {
     fun setBannerSetting(): String{
         val BannerSetting = remoteConfig.getString("banner_setting")
         return BannerSetting
+    }
+    // INTER
+    fun setInterListMusicMenu(): String{
+        val InterListMusicMenu = remoteConfig.getString("inter_list_music_menu")
+        return InterListMusicMenu
     }
 }

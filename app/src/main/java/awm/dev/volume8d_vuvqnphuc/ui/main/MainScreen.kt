@@ -1,14 +1,11 @@
 package awm.dev.volume8d_vuvqnphuc.ui.main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -22,17 +19,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
-import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNav
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNavigator
 import awm.dev.volume8d_vuvqnphuc.ui.main.list_music.ListMusicScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.music.MusicScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.setting.SettingScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.volume.VolumeScreen
+import awm.dev.volume8d_vuvqnphuc.remote_config.InterADS
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import android.app.Activity
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -40,6 +37,7 @@ fun MainScreen(
     currentIndexTab: Int = 0,
     changeIndexTab: (Int) -> Unit,
     onNavigateToLanguage: () -> Unit = {},
+    appViewModel: AppMainViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState(initialPage = currentIndexTab) { 4 }
 
@@ -52,6 +50,15 @@ fun MainScreen(
     }
 
     val context = LocalContext.current
+    val activity = context as? Activity
+
+    LaunchedEffect(Unit) {
+        if (appViewModel.isCheckADS()) {
+            activity?.let {
+                InterADS.loadInterstitialAd(it, appViewModel.getInterListMusicMenu())
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -119,7 +126,17 @@ fun MainScreen(
                         BottomNav.VOLUME -> 2
                         BottomNav.SETTING -> 3
                     }
-                    changeIndexTab(targetPage)
+                    if (tab == BottomNav.LISTMUSIC && appViewModel.isCheckADS()) {
+                        activity?.let {
+                            InterADS.showInterstitialAd(it) {
+                                changeIndexTab(targetPage)
+                                // Preload next
+                                InterADS.loadInterstitialAd(it, appViewModel.getInterListMusicMenu())
+                            }
+                        } ?: changeIndexTab(targetPage)
+                    } else {
+                        changeIndexTab(targetPage)
+                    }
                 },
                 typeSelected = selectedTab,
             )

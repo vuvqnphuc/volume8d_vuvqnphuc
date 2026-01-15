@@ -56,5 +56,6 @@ class AppMainViewModel @Inject constructor(
     fun getBannerListMusic(): String = remoteConfigManager.setBannerListMusic()
     fun getBannerVolume(): String = remoteConfigManager.setBannerVolume()
     fun getBannerSetting(): String = remoteConfigManager.setBannerSetting()
+    fun getInterListMusicMenu(): String = remoteConfigManager.setInterListMusicMenu()
 }
 

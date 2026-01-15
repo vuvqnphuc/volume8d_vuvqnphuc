@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
@@ -30,10 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
-import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
+import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 
 @Composable
 fun SettingScreen(
@@ -58,7 +55,7 @@ fun SettingScreen(
     ) {
         val BannerSetting = appMainViewModel.getBannerSetting()
         if (appMainViewModel.isCheckADS() && BannerSetting.isNotEmpty()) {
-            BannerAdView(
+            BannerADS(
                 adUnitId = BannerSetting,
                 modifier = Modifier.fillMaxWidth()
             )

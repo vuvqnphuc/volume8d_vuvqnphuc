@@ -60,7 +60,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
-import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
+import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
@@ -115,7 +115,7 @@ fun ListMusicScreen(
         ) {
             val BannerListMusic = appMainViewModel.getBannerListMusic()
             if (appMainViewModel.isCheckADS() && BannerListMusic.isNotEmpty()) {
-                BannerAdView(
+                BannerADS(
                     adUnitId = BannerListMusic,
                     modifier = Modifier.fillMaxWidth()
                 )

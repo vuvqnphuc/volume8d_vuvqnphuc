@@ -1,4 +1,4 @@
-package awm.dev.volume8d_vuvqnphuc.component
+package awm.dev.volume8d_vuvqnphuc.remote_config
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -9,7 +9,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
 @Composable
-fun BannerAdView(
+fun BannerADS(
     adUnitId: String,
     modifier: Modifier = Modifier
 ) {

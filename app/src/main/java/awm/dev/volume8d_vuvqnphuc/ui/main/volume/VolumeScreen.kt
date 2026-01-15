@@ -17,12 +17,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
@@ -30,10 +27,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +41,7 @@ import awm.dev.volume8d_vuvqnphuc.R
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
-import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
+import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
 @Composable
@@ -69,7 +62,7 @@ fun VolumeScreen(
     ) {
         val BannerVolume = appMainViewModel.getBannerVolume()
         if (appMainViewModel.isCheckADS() && BannerVolume.isNotEmpty()) {
-            BannerAdView(
+            BannerADS(
                 adUnitId = BannerVolume,
                 modifier = Modifier.fillMaxWidth()
             )
