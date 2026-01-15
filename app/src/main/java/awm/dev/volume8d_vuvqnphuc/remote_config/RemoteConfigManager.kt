@@ -28,7 +28,8 @@ class RemoteConfigManager @Inject constructor() {
             "banner_volume" to "",
             "banner_setting" to "",
             // INTER
-            "inter_list_music_menu" to ""
+            "inter_list_music_menu" to "",
+            "inter_done_language" to ""
         )
         remoteConfig.setDefaultsAsync(defaults)
     }
@@ -69,5 +70,9 @@ class RemoteConfigManager @Inject constructor() {
     fun setInterListMusicMenu(): String{
         val InterListMusicMenu = remoteConfig.getString("inter_list_music_menu")
         return InterListMusicMenu
+    }
+    fun setInterDoneLanguage(): String {
+        val InterDoneLanguage = remoteConfig.getString("inter_done_language")
+        return InterDoneLanguage
     }
 }

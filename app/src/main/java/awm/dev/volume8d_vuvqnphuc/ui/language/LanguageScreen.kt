@@ -41,11 +41,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.component.ButtonCommonContent
 import awm.dev.volume8d_vuvqnphuc.data.local.LANG
 import awm.dev.volume8d_vuvqnphuc.data.local.Language
+import awm.dev.volume8d_vuvqnphuc.remote_config.InterADS
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import kotlinx.coroutines.delay
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -54,6 +59,7 @@ fun LanguageScreen(
     listLanguage: List<Language>,
     language: Language?,
     onChangeLanguage: (LANG?) -> Unit,
+    appViewModel: AppMainViewModel = hiltViewModel()
 ) {
 
     var selectLanguage by remember {
@@ -74,8 +80,15 @@ fun LanguageScreen(
         ),
         label = "scale"
     )
+    val context = LocalContext.current
+    val activity = context as? Activity
 
     LaunchedEffect(key1 = Unit) {
+        if (appViewModel.isCheckADS()) {
+            activity?.let {
+                InterADS.loadInterstitialAd(it, appViewModel.getInterDoneLanguage())
+            }
+        }
         delay(0) //to do
         isReadyNextScreen = true
     }
@@ -145,7 +158,15 @@ fun LanguageScreen(
                     },
                 onClick = {
                     if (isReadyNextScreen) {
-                        onChangeLanguage(selectLanguage?.code)
+                        if (appViewModel.isCheckADS()) {
+                            activity?.let {
+                                InterADS.showInterstitialAd(it) {
+                                    onChangeLanguage(selectLanguage?.code)
+                                }
+                            } ?: onChangeLanguage(selectLanguage?.code)
+                        } else {
+                            onChangeLanguage(selectLanguage?.code)
+                        }
                     }
                 }
             ) {
@@ -214,7 +235,15 @@ fun LanguageScreen(
 
     BackHandler {
         if (isReadyNextScreen) {
-            onChangeLanguage(selectLanguage?.code)
+            if (appViewModel.isCheckADS()) {
+                activity?.let {
+                    InterADS.showInterstitialAd(it) {
+                        onChangeLanguage(selectLanguage?.code)
+                    }
+                } ?: onChangeLanguage(selectLanguage?.code)
+            } else {
+                onChangeLanguage(selectLanguage?.code)
+            }
         }
     }
 }
