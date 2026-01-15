@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -54,6 +55,8 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.36.0")
     // hilt
     implementation("com.google.dagger:hilt-android:2.57.2")
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.crashlytics)
     ksp("com.google.dagger:hilt-compiler:2.57.2")
     ksp("com.google.dagger:hilt-android-compiler:2.57.2")
     //retrofit
@@ -66,6 +69,13 @@ dependencies {
     ksp("com.github.bumptech.glide:compiler:4.16.0")
     // anim
     implementation(libs.lottie.compose)
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.play.services.ads)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

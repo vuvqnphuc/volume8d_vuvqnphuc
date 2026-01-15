@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "123456789012",
-    "project_id": "placeholder-id",
-    "storage_bucket": "placeholder-id.appspot.com"
+    "project_number": "490593787452",
+    "project_id": "hahasoft8dvolume",
+    "storage_bucket": "hahasoft8dvolume.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789012:android:0000000000000000000000",
+        "mobilesdk_app_id": "1:490593787452:android:370590ac9fd64f5178ad39",
         "android_client_info": {
           "package_name": "awm.dev.volume8d_vuvqnphuc"
         }
@@ -15,18 +15,12 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDummyKeyForBuildPurposesOnly"
+          "current_key": "AIzaSyBvvUy00tlne-Y_WtvTGDBQV0R_S0JUumo"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": []
         }
       }
     }

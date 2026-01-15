@@ -2,6 +2,7 @@ package awm.dev.volume8d_vuvqnphuc
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import awm.dev.volume8d_vuvqnphuc.remote_config.RemoteConfigManager
 import awm.dev.volume8d_vuvqnphuc.utils.internet.ConnectivityObserver
 import awm.dev.volume8d_vuvqnphuc.utils.internet.NetworkConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,8 +14,16 @@ import javax.inject.Inject
 class AppMainViewModel @Inject constructor(
     private val connectivityObserver: NetworkConnectivityObserver,
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
+    private val remoteConfigManager: RemoteConfigManager
 ) : ViewModel() {
-
+    init {
+        fetchRemoteConfig()
+    }
+    private fun fetchRemoteConfig() {
+        remoteConfigManager.fetchValues { success ->
+            android.util.Log.d("AppViewModel", "RemoteConfig fetch completed: $success")
+        }
+    }
     private val _networkStatus = kotlinx.coroutines.flow.MutableStateFlow(
         if (awm.dev.volume8d_vuvqnphuc.utils.internet.isNetworkConnected(context))
             ConnectivityObserver.Status.Available
@@ -37,5 +46,8 @@ class AppMainViewModel @Inject constructor(
             _networkStatus.value = status
         }
     }
+    // ADS
+    fun isCheckADS(): Boolean = remoteConfigManager.isCheckADS()
+    fun getBannerMain(): String = remoteConfigManager.getBannerMain()
 }
 

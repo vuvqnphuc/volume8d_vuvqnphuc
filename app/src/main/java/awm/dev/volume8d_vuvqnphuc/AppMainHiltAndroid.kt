@@ -5,6 +5,7 @@ import android.util.Log
 import awm.dev.volume8d_vuvqnphuc.data.local.LANG
 import com.example.datatransfer.utils.language.ManagerSaveLocal
 import com.example.datatransfer.utils.language.changeLanguage
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -12,6 +13,7 @@ class AppMainHiltAndroid : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        MobileAds.initialize(this) {}
         ManagerSaveLocal.init(this)
         checkAndSetLanguageDefault()
     }

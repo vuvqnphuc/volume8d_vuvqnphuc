@@ -1,9 +1,13 @@
 package awm.dev.volume8d_vuvqnphuc.ui.main
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -17,6 +21,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
+import awm.dev.volume8d_vuvqnphuc.component.BannerAdView
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNav
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNavigator
 import awm.dev.volume8d_vuvqnphuc.ui.main.list_music.ListMusicScreen
@@ -31,6 +39,7 @@ fun MainScreen(
     currentIndexTab: Int = 0,
     changeIndexTab: (Int) -> Unit,
     onNavigateToLanguage: () -> Unit = {},
+    viewModel: AppMainViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState(initialPage = currentIndexTab) { 4 }
 
@@ -94,6 +103,16 @@ fun MainScreen(
                     }
                 )
             }
+        }
+        val adUnitId = viewModel.getBannerMain()
+        if (viewModel.isCheckADS() && adUnitId.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(20.dp))
+            BannerAdView(
+                adUnitId = adUnitId,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Log.d("adUnitId", "sdasdasda:$adUnitId ")
+            Spacer(modifier = Modifier.height(20.dp))
         }
         BottomNavigator(
             modifier = Modifier
