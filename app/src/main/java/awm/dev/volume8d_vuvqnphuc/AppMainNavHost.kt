@@ -80,9 +80,6 @@ fun AppMainNavHost(
                 onChangeLanguage = { lang ->
                     lang?.let {
                         changeLanguage(it)
-                        scopeNav.launch(Dispatchers.IO) {
-                            ManagerSaveLocal.setLanguageApp(lang)
-                        }
                     }
 
                     if (route.showFrom == SplashRoute.toString()) {

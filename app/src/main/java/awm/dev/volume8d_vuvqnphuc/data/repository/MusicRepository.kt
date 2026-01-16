@@ -25,8 +25,11 @@ class MusicRepository @Inject constructor(
     private val musicDao: MusicDao
 ) {
     suspend fun getAllMusicFiles(): List<MusicFile> {
-        val musicList = mutableListOf<MusicFile>()
-        
+        val presetCount = musicDao.getPresetCount()
+        if (presetCount == 0) {
+            initializePreset()
+        }
+
         val mediaStoreFiles = mutableListOf<MusicFile>()
         val collection = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
@@ -72,15 +75,7 @@ class MusicRepository @Inject constructor(
         }
 
         val dbFiles = musicDao.getAllMusicSync()
-
-        val combined = dbFiles + mediaStoreFiles
-        
-        if (combined.isEmpty()) {
-            initializePreset()
-            return musicDao.getAllMusicSync()
-        }
-
-        return combined
+        return dbFiles + mediaStoreFiles
     }
 
     private fun formatDuration(durationMs: Long): String {
@@ -92,6 +87,7 @@ class MusicRepository @Inject constructor(
     private suspend fun initializePreset() {
         val path = "android.resource://${context.packageName}/raw/file_music"
         val preset = MusicFile(
+            id = 1, // Fixed ID to prevent duplication
             name = context.getString(R.string.mikenco_trend_remix),
             duration = "05:48",
             path = path,
