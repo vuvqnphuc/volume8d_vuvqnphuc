@@ -2,8 +2,8 @@ package awm.dev.volume8d_vuvqnphuc.ui.main
 
 import android.app.Activity
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,12 +13,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -29,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
+import awm.dev.volume8d_vuvqnphuc.component.DialogExitApp
 import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 import awm.dev.volume8d_vuvqnphuc.remote_config.InterADS
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNav
@@ -59,6 +63,24 @@ fun MainScreen(
 
     val context = LocalContext.current
     val activity = context as? Activity
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    BackHandler {
+        if (currentIndexTab != 0) {
+            changeIndexTab(0)
+        } else {
+            showExitDialog = true
+        }
+    }
+
+    if (showExitDialog) {
+        DialogExitApp(
+            onDismissRequest = { showExitDialog = false },
+            onConfirmation = {
+                activity?.finish()
+            }
+        )
+    }
 
     LaunchedEffect(Unit) {
         if (appViewModel.isCheckADS()) {
@@ -167,7 +189,12 @@ fun MainScreen(
                 },
                 typeSelected = selectedTab,
             )
-            Spacer(modifier = Modifier.height(0.5.dp).fillMaxWidth().background(color = Color.Black))
+            Spacer(
+                modifier = Modifier
+                    .height(0.5.dp)
+                    .fillMaxWidth()
+                    .background(color = Color.Black)
+            )
             if (appViewModel.isCheckADS()) {
                 val adUnitId = when (selectedTab) {
                     BottomNav.MUSIC -> appViewModel.getBannerMusic()
@@ -176,9 +203,10 @@ fun MainScreen(
                     BottomNav.SETTING -> appViewModel.getBannerSetting()
                 }
                 if (adUnitId.isNotEmpty()) {
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.White)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.White)
                     ) {
                         BannerADS(
                             adUnitId = adUnitId,
