@@ -1,15 +1,14 @@
 package awm.dev.volume8d_vuvqnphuc.data.repository
 
-import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
 import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class MusicRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
     fun getAllMusicFiles(): List<MusicFile> {
         val musicList = mutableListOf<MusicFile>()
@@ -47,8 +46,10 @@ class MusicRepository @Inject constructor(
 
                 while (cursor.moveToNext()) {
                     val id = if (idColumn != -1) cursor.getLong(idColumn) else 0L
-                    val name = if (nameColumn != -1) cursor.getString(nameColumn) ?: "Unknown" else "Unknown"
-                    val durationMs = if (durationColumn != -1) cursor.getLong(durationColumn) else 0L
+                    val name = if (nameColumn != -1) cursor.getString(nameColumn)
+                        ?: "Unknown" else "Unknown"
+                    val durationMs =
+                        if (durationColumn != -1) cursor.getLong(durationColumn) else 0L
                     val path = if (dataColumn != -1) cursor.getString(dataColumn) ?: "" else ""
                     if (path.isNotEmpty()) {
                         val durationStr = formatDuration(durationMs)

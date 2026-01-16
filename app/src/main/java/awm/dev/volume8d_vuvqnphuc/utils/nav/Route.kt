@@ -14,3 +14,6 @@ data class LanguageRoute(val showFrom: String) : BaseRoute()
 @Keep
 @Serializable
 data object MainRoute : BaseRoute()
+@Keep
+@Serializable
+data object InstructionsRoute : BaseRoute()

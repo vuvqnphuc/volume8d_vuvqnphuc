@@ -14,4 +14,7 @@ class NavAction(private val navController: NavHostController) {
     fun navToMainScreen() {
         navSingleToTop(route = MainRoute)
     }
+    fun navToInstructionsScreen() {
+        navSingleToTop(route = InstructionsRoute)
+    }
 }

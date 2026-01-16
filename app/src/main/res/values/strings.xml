@@ -22,4 +22,6 @@
     <string name="language">Language</string>
     <string name="select_your_preferred_language">Select your preferred language</string>
     <string name="setting_the_language">Setting the language</string>
+    <string name="instructions">Instructions</string>
+    <string name="instructions_for_using_the_application">Instructions for using the application</string>
 </resources>

@@ -28,7 +28,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true // Kích hoạt làm rối và xóa code thừa
+            isShrinkResources = true // Xóa tài nguyên thừa (giảm dung lượng APK)
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

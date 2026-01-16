@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Share
@@ -43,6 +44,7 @@ fun SettingScreen(
     onLanguageClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onRateClick: () -> Unit = {},
+    onInstructionsClick: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -104,6 +106,17 @@ fun SettingScreen(
 
                 SettingCard {
                     Column {
+                        SettingItem(
+                            icon = Icons.Default.Info,
+                            title = stringResource(R.string.instructions),
+                            subtitle = stringResource(R.string.instructions_for_using_the_application),
+                            onClick = onInstructionsClick
+                        )
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            thickness = 0.5.dp,
+                            color = Color.White.copy(alpha = 0.1f)
+                        )
                         SettingItem(
                             icon = Icons.Default.Share,
                             title = stringResource(R.string.share_app),

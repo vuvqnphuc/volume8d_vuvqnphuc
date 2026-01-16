@@ -12,8 +12,6 @@ object OpenADS {
     private var mAppOpenAd: AppOpenAd? = null
     private var isAdLoading = false
 
-    fun isAdReady(): Boolean = mAppOpenAd != null
-
     fun loadOpenAd(activity: Activity, adUnitId: String, onAdLoaded: () -> Unit = {}, onAdFailed: () -> Unit = {}) {
         if (adUnitId.isEmpty() || isAdLoading || mAppOpenAd != null) {
             if (mAppOpenAd != null) onAdLoaded()

@@ -49,6 +49,7 @@ fun MainScreen(
     currentIndexTab: Int = 0,
     changeIndexTab: (Int) -> Unit,
     onNavigateToLanguage: () -> Unit = {},
+    onNavigateToInstructions: () -> Unit = {},
     appViewModel: AppMainViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState(initialPage = currentIndexTab) { 4 }
@@ -153,7 +154,8 @@ fun MainScreen(
                                 )
                             )
                         }
-                    }
+                    },
+                    onInstructionsClick = onNavigateToInstructions
                 )
             }
         }

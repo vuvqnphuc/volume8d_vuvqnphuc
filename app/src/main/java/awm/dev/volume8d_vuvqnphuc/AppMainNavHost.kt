@@ -15,10 +15,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import awm.dev.volume8d_vuvqnphuc.data.local.Language
+import awm.dev.volume8d_vuvqnphuc.ui.Instructions.InstructionsScreen
 import awm.dev.volume8d_vuvqnphuc.ui.language.LanguageScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainScreen
 import awm.dev.volume8d_vuvqnphuc.ui.splash.SplashScreen
 import awm.dev.volume8d_vuvqnphuc.utils.nav.BaseRoute
+import awm.dev.volume8d_vuvqnphuc.utils.nav.InstructionsRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.LanguageRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.MainRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.NavAction
@@ -100,8 +102,14 @@ fun AppMainNavHost(
                 changeIndexTab = { selectedIndex = it },
                 onNavigateToLanguage = {
                     navAction.navToLanguageScreen(showFrom = MainRoute.toString())
+                },
+                onNavigateToInstructions = {
+                    navAction.navToInstructionsScreen()
                 }
             )
+        }
+        composable<InstructionsRoute> {
+            InstructionsScreen()
         }
     }
 }
