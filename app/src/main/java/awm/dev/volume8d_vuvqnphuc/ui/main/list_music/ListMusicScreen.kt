@@ -310,6 +310,13 @@ fun MusicListItem(music: MusicFile, onDelete: () -> Unit, onClick: () -> Unit) {
                         fontWeight = FontWeight.Bold,
                         maxLines = 1
                     )
+                    Text(
+                        text = stringResource(R.string.swipe_left_to_delete_this_file),
+                        color = Color.Black.copy(alpha = 0.6f),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        maxLines = 1
+                    )
                 }
 
                 Text(

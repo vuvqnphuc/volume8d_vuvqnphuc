@@ -32,4 +32,5 @@
     <string name="select_the_music_tab_to_control_the_music_player_the_app_supports_looping_a_song_indefinitely_until_you_turn_it_off">Select the \'Music\' tab to control the music player. The app supports looping a song indefinitely until you turn it off.</string>
     <string name="premium_features">Premium Features</string>
     <string name="the_app_supports_bass_boost_clear_voice_and_especially_8d_audio_mode_with_customizable_speed">The app supports Bass Boost, Clear Voice, and especially 8D audio mode with customizable speed.</string>
+    <string name="swipe_left_to_delete_this_file">Swipe left to delete this file</string>
 </resources>
