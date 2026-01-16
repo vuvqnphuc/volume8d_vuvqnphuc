@@ -236,7 +236,7 @@ fun ListMusicScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                bottom = 100.dp,
+                bottom = 200.dp,
                 start = 24.dp,
                 end = 24.dp
             )
