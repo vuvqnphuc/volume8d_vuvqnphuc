@@ -1,5 +1,6 @@
 package awm.dev.volume8d_vuvqnphuc.ui.splash
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
+import awm.dev.volume8d_vuvqnphuc.remote_config.OpenADS
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -38,11 +42,44 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SplashScreen(
-    nextScreen: () -> Unit = {}
+    nextScreen: () -> Unit = {},
 ) {
+    val viewModel: AppMainViewModel = hiltViewModel()
+    val activity = LocalActivity.current
+    val remoteConfigManager = viewModel.remoteConfigManager
     LaunchedEffect(Unit) {
-        delay(5000)
-        nextScreen()
+        if (activity == null) {
+            delay(3000)
+            nextScreen()
+            return@LaunchedEffect
+        }
+        if (remoteConfigManager.isCheckADS()) {
+            val adUnitId = remoteConfigManager.setOpenApp()
+            if (adUnitId.isNotEmpty()) {
+                var adShown = false
+                OpenADS.loadOpenAd(activity, adUnitId, onAdLoaded = {
+                    if (!adShown) {
+                        adShown = true
+                        OpenADS.showOpenAd(activity) {
+                            nextScreen()
+                        }
+                    }
+                }, onAdFailed = {
+                    nextScreen()
+                })
+                // Timeout to ensure we don't get stuck
+                delay(8000)
+                if (!adShown) {
+                    nextScreen()
+                }
+            } else {
+                delay(3000)
+                nextScreen()
+            }
+        } else {
+            delay(3000)
+            nextScreen()
+        }
     }
     val animLoad by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.anim_load)
@@ -86,7 +123,9 @@ fun SplashScreen(
             Text(
                 stringResource(R.string.app_name),
                 color = Color.Black,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold

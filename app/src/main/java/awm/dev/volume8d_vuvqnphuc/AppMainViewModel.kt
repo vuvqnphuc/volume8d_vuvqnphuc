@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AppMainViewModel @Inject constructor(
     private val connectivityObserver: NetworkConnectivityObserver,
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
-    private val remoteConfigManager: RemoteConfigManager
+    val remoteConfigManager: RemoteConfigManager,
 ) : ViewModel() {
 
     init {
@@ -50,6 +50,7 @@ class AppMainViewModel @Inject constructor(
             _networkStatus.value = status
         }
     }
+
     // ADS
     fun isCheckADS(): Boolean = remoteConfigManager.isCheckADS()
     fun getBannerMusic(): String = remoteConfigManager.setBannerMusic()
