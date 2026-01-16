@@ -52,27 +52,33 @@ class RemoteConfigManager @Inject constructor() {
     // BANNER
     fun setBannerMusic(): String {
         val BannerMusic = remoteConfig.getString("banner_music")
+        Log.e("log1", "adUnitId: BannerMusic ")
         return BannerMusic
     }
     fun setBannerListMusic(): String{
         val BannerListMusic = remoteConfig.getString("banner_list_music")
+        Log.e("log1", "adUnitId: BannerListMusic ")
         return BannerListMusic
     }
     fun setBannerVolume(): String{
         val BannerVolume = remoteConfig.getString("banner_volume")
+        Log.e("log1", "adUnitId: BannerVolume " )
         return BannerVolume
     }
     fun setBannerSetting(): String{
         val BannerSetting = remoteConfig.getString("banner_setting")
+        Log.e("log1", "adUnitId: BannerSetting")
         return BannerSetting
     }
     // INTER
     fun setInterListMusicMenu(): String{
         val InterListMusicMenu = remoteConfig.getString("inter_list_music_menu")
+        Log.e("log1", "adUnitId: InterListMusicMenu ")
         return InterListMusicMenu
     }
     fun setInterDoneLanguage(): String {
         val InterDoneLanguage = remoteConfig.getString("inter_done_language")
+        Log.e("log1", "adUnitId: InterDoneLanguage ")
         return InterDoneLanguage
     }
 }

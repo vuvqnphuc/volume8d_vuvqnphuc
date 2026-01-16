@@ -36,30 +36,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
-import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 
 @Composable
 fun SettingScreen(
     onLanguageClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onRateClick: () -> Unit = {},
-    appMainViewModel: AppMainViewModel= hiltViewModel()
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val BannerSetting = appMainViewModel.getBannerSetting()
-        if (appMainViewModel.isCheckADS() && BannerSetting.isNotEmpty()) {
-            BannerADS(
-                adUnitId = BannerSetting,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
         // Upper Title
         Box(
             modifier = Modifier
@@ -83,7 +72,7 @@ fun SettingScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 // Group: Preferences
                 Text(
                     text = stringResource(R.string.preferences),
@@ -92,7 +81,7 @@ fun SettingScreen(
                     color = Color.White.copy(alpha = 0.6f),
                     modifier = Modifier.padding(start = 8.dp, bottom = 12.dp)
                 )
-                
+
                 SettingCard {
                     SettingItem(
                         icon = Icons.Default.Menu,
@@ -136,7 +125,7 @@ fun SettingScreen(
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
-                
+
                 // App Version Info
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -158,7 +147,7 @@ fun SettingScreen(
                         color = Color.White.copy(alpha = 0.3f)
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(100.dp))
             }
         }

@@ -1,12 +1,19 @@
 package awm.dev.volume8d_vuvqnphuc.ui.main
 
+import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -19,17 +26,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
+import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
+import awm.dev.volume8d_vuvqnphuc.remote_config.InterADS
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNav
 import awm.dev.volume8d_vuvqnphuc.ui.bottom_navigator.BottomNavigator
 import awm.dev.volume8d_vuvqnphuc.ui.main.list_music.ListMusicScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.music.MusicScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.setting.SettingScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.volume.VolumeScreen
-import awm.dev.volume8d_vuvqnphuc.remote_config.InterADS
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import android.app.Activity
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -95,17 +103,33 @@ fun MainScreen(
                     onShareClick = {
                         val sendIntent = android.content.Intent().apply {
                             action = android.content.Intent.ACTION_SEND
-                            putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=${context.packageName}")
+                            putExtra(
+                                android.content.Intent.EXTRA_TEXT,
+                                "https://play.google.com/store/apps/details?id=${context.packageName}"
+                            )
                             type = "text/plain"
                         }
-                        context.startActivity(android.content.Intent.createChooser(sendIntent, null))
+                        context.startActivity(
+                            android.content.Intent.createChooser(
+                                sendIntent,
+                                null
+                            )
+                        )
                     },
                     onRateClick = {
-                        val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("market://details?id=${context.packageName}"))
+                        val intent = android.content.Intent(
+                            android.content.Intent.ACTION_VIEW,
+                            android.net.Uri.parse("market://details?id=${context.packageName}")
+                        )
                         try {
                             context.startActivity(intent)
                         } catch (e: android.content.ActivityNotFoundException) {
-                            context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")))
+                            context.startActivity(
+                                android.content.Intent(
+                                    android.content.Intent.ACTION_VIEW,
+                                    android.net.Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+                                )
+                            )
                         }
                     }
                 )
@@ -131,7 +155,10 @@ fun MainScreen(
                             InterADS.showInterstitialAd(it) {
                                 changeIndexTab(targetPage)
                                 // Preload next
-                                InterADS.loadInterstitialAd(it, appViewModel.getInterListMusicMenu())
+                                InterADS.loadInterstitialAd(
+                                    it,
+                                    appViewModel.getInterListMusicMenu()
+                                )
                             }
                         } ?: changeIndexTab(targetPage)
                     } else {
@@ -140,6 +167,27 @@ fun MainScreen(
                 },
                 typeSelected = selectedTab,
             )
+            Spacer(modifier = Modifier.height(0.5.dp).fillMaxWidth().background(color = Color.Black))
+            if (appViewModel.isCheckADS()) {
+                val adUnitId = when (selectedTab) {
+                    BottomNav.MUSIC -> appViewModel.getBannerMusic()
+                    BottomNav.LISTMUSIC -> appViewModel.getBannerListMusic()
+                    BottomNav.VOLUME -> appViewModel.getBannerVolume()
+                    BottomNav.SETTING -> appViewModel.getBannerSetting()
+                }
+                if (adUnitId.isNotEmpty()) {
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.White)
+                    ) {
+                        BannerADS(
+                            adUnitId = adUnitId,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                    Log.e("log1", "adUnitId:$adUnitId ")
+                }
+            }
         }
     }
 

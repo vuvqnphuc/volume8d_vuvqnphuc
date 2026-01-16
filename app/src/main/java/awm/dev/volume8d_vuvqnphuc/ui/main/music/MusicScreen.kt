@@ -38,9 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
-import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -51,7 +49,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 @Composable
 fun MusicScreen(
     viewModel: MainViewModel = hiltViewModel(),
-    appMainViewModel: AppMainViewModel = hiltViewModel(),
     onNavigateToList: () -> Unit = {},
 ) {
     val currentMusic by viewModel.currentMusic.collectAsState()
@@ -74,13 +71,6 @@ fun MusicScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val BannerMusic = appMainViewModel.getBannerMusic()
-        if (appMainViewModel.isCheckADS() && BannerMusic.isNotEmpty()) {
-            BannerADS(
-                adUnitId = BannerMusic,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

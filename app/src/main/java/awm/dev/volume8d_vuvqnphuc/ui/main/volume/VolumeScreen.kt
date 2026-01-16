@@ -26,6 +26,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,18 +37,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import awm.dev.volume8d_vuvqnphuc.R
-
-import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
-import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
+import awm.dev.volume8d_vuvqnphuc.R
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
 @Composable
 fun VolumeScreen(
     viewModel: MainViewModel = hiltViewModel(),
-    appMainViewModel: AppMainViewModel=hiltViewModel()
 ) {
     val masterVolume by viewModel.masterVolume.collectAsState()
     val bassBoost by viewModel.bassStrength.collectAsState()
@@ -60,13 +56,7 @@ fun VolumeScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val BannerVolume = appMainViewModel.getBannerVolume()
-        if (appMainViewModel.isCheckADS() && BannerVolume.isNotEmpty()) {
-            BannerADS(
-                adUnitId = BannerVolume,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+
         // Upper Title
         Box(
             modifier = Modifier
@@ -152,7 +142,9 @@ fun Special8DControl(
     Card(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isEnabled) Color.White.copy(alpha = 0.25f) else Color.White.copy(alpha = 0.1f)
+            containerColor = if (isEnabled) Color.White.copy(alpha = 0.25f) else Color.White.copy(
+                alpha = 0.1f
+            )
         ),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -182,9 +174,9 @@ fun Special8DControl(
                         modifier = Modifier.size(24.dp)
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.width(16.dp))
-                
+
                 Column {
                     Text(
                         text = "8D Surround Mode",
@@ -220,7 +212,7 @@ fun MasterVolumeControl(
     onVolumeChange: (Float) -> Unit
 ) {
     val percentage = (volume * 100).toInt()
-    
+
     Card(
         shape = RoundedCornerShape(40.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.15f)),
@@ -316,9 +308,9 @@ fun EffectSlider(
                     modifier = Modifier.size(24.dp)
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(16.dp))
-            
+
             Column(modifier = Modifier.weight(1f)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),

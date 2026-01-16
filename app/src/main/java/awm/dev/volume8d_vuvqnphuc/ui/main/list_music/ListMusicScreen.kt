@@ -58,16 +58,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
 import awm.dev.volume8d_vuvqnphuc.R
-import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 
 @Composable
 fun ListMusicScreen(
     viewModel: MainViewModel = hiltViewModel(),
-    appMainViewModel: AppMainViewModel = hiltViewModel(),
     onNavigateToPlayer: () -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -113,13 +110,6 @@ fun ListMusicScreen(
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val BannerListMusic = appMainViewModel.getBannerListMusic()
-            if (appMainViewModel.isCheckADS() && BannerListMusic.isNotEmpty()) {
-                BannerADS(
-                    adUnitId = BannerListMusic,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
