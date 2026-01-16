@@ -24,4 +24,12 @@
     <string name="setting_the_language">Setting the language</string>
     <string name="instructions">Instructions</string>
     <string name="instructions_for_using_the_application">Instructions for using the application</string>
+    <string name="select_music_list">Select Music List</string>
+    <string name="to_use_the_app_select_list_music_to_access_audio_files_on_your_device_please_grant_the_necessary_permissions_for_the_app_to_function_smoothly">To use the app, select \'List Music\' to access audio files on your device. Please grant the necessary permissions for the app to function smoothly.</string>
+    <string name="manage_delete_files"><![CDATA[Manage & Delete Files]]></string>
+    <string name="in_the_music_list_you_can_delete_files_by_swiping_left_to_reveal_the_delete_icon_if_you_want_to_play_music_simply_click_on_the_item">In the music list, you can delete files by swiping left to reveal the delete icon. If you want to play music, simply click on the item.</string>
+    <string name="usage_experience"><![CDATA[Usage & Experience]]></string>
+    <string name="select_the_music_tab_to_control_the_music_player_the_app_supports_looping_a_song_indefinitely_until_you_turn_it_off">Select the \'Music\' tab to control the music player. The app supports looping a song indefinitely until you turn it off.</string>
+    <string name="premium_features">Premium Features</string>
+    <string name="the_app_supports_bass_boost_clear_voice_and_especially_8d_audio_mode_with_customizable_speed">The app supports Bass Boost, Clear Voice, and especially 8D audio mode with customizable speed.</string>
 </resources>

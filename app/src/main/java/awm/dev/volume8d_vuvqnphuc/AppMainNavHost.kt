@@ -109,7 +109,11 @@ fun AppMainNavHost(
             )
         }
         composable<InstructionsRoute> {
-            InstructionsScreen()
+            InstructionsScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
