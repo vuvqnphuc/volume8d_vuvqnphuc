@@ -16,9 +16,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+import android.content.Context
+import android.net.Uri
+import dagger.hilt.android.qualifiers.ApplicationContext
+
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val musicRepository: MusicRepository
+    private val musicRepository: MusicRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _musicFiles = MutableStateFlow<List<MusicFile>>(emptyList())
@@ -73,9 +78,12 @@ class MainViewModel @Inject constructor(
     }
 
     fun removeMusic(music: MusicFile) {
-        val currentList = _musicFiles.value.toMutableList()
-        currentList.remove(music)
-        _musicFiles.value = currentList
+        viewModelScope.launch(Dispatchers.IO) {
+            musicRepository.removeMusic(music)
+            // Reload the list - this will trigger initializePreset if no files left
+            val files = musicRepository.getAllMusicFiles()
+            _musicFiles.value = files
+        }
     }
 
     fun incrementPermissionDeniedCount() {
@@ -100,7 +108,21 @@ class MainViewModel @Inject constructor(
             progressJob?.cancel()
 
             mediaPlayer = MediaPlayer().apply {
-                setDataSource(music.path)
+                if (music.path.startsWith("android.resource://")) {
+                    val uri = Uri.parse(music.path)
+                    val resName = uri.lastPathSegment
+                    val resId = context.resources.getIdentifier(resName, "raw", context.packageName)
+                    
+                    if (resId != 0) {
+                        val afd = context.resources.openRawResourceFd(resId)
+                        setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                        afd.close()
+                    } else {
+                        setDataSource(context, uri)
+                    }
+                } else {
+                    setDataSource(context, Uri.parse(music.path))
+                }
                 prepare()
                 
                 // Init Effects

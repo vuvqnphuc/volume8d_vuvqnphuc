@@ -66,6 +66,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.R
+import awm.dev.volume8d_vuvqnphuc.component.DialogDeleteFile
 import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
 import awm.dev.volume8d_vuvqnphuc.component.DialogGotoSetting
@@ -137,6 +138,18 @@ fun ListMusicScreen(
                     data = Uri.fromParts("package", context.packageName, null)
                 }
                 context.startActivity(intent)
+            }
+        )
+    }
+
+    var musicToDelete by remember { mutableStateOf<MusicFile?>(null) }
+
+    if (musicToDelete != null) {
+        DialogDeleteFile(
+            onDismissRequest = { musicToDelete = null },
+            onConfirmation = {
+                musicToDelete?.let { viewModel.removeMusic(it) }
+                musicToDelete = null
             }
         )
     }
@@ -217,7 +230,7 @@ fun ListMusicScreen(
             ) { music ->
                 MusicListItem(
                     music = music,
-                    onDelete = { viewModel.removeMusic(music) },
+                    onDelete = { musicToDelete = music },
                     onClick = {
                         viewModel.playMusic(music)
                         onNavigateToPlayer()
