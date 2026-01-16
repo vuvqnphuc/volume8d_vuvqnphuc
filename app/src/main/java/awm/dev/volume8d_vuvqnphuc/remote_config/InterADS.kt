@@ -13,6 +13,8 @@ object InterADS {
     private var mInterstitialAd: InterstitialAd? = null
     private var isAdLoading = false
 
+    fun isAdReady(): Boolean = mInterstitialAd != null
+
     fun loadInterstitialAd(activity: Activity, adUnitId: String) {
         if (adUnitId.isEmpty() || isAdLoading || mInterstitialAd != null) return
 

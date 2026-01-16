@@ -25,7 +25,7 @@ fun ButtonCommonContent(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(30.dp))
-            .background(color = Color.Black)
+            .background(color = Color.Blue)
             .clickableOnce { onClick() }
             .padding(horizontal = paddingHorizontal.dp, vertical = paddingVertical.dp),
         contentAlignment = Alignment.Center

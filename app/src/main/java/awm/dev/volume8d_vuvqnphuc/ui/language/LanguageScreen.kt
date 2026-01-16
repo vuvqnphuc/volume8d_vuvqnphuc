@@ -28,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +52,8 @@ import kotlinx.coroutines.delay
 import android.app.Activity
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import awm.dev.volume8d_vuvqnphuc.component.DialogLoadADS
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -82,6 +85,8 @@ fun LanguageScreen(
     )
     val context = LocalContext.current
     val activity = context as? Activity
+    val scope = rememberCoroutineScope()
+    var isShowDialogLoadAds by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
         if (appViewModel.isCheckADS()) {
@@ -160,8 +165,19 @@ fun LanguageScreen(
                     if (isReadyNextScreen) {
                         if (appViewModel.isCheckADS()) {
                             activity?.let {
-                                InterADS.showInterstitialAd(it) {
-                                    onChangeLanguage(selectLanguage?.code)
+                                if (InterADS.isAdReady()) {
+                                    InterADS.showInterstitialAd(it) {
+                                        onChangeLanguage(selectLanguage?.code)
+                                    }
+                                } else {
+                                    isShowDialogLoadAds = true
+                                    scope.launch {
+                                        delay(2000)
+                                        isShowDialogLoadAds = false
+                                        InterADS.showInterstitialAd(it) {
+                                            onChangeLanguage(selectLanguage?.code)
+                                        }
+                                    }
                                 }
                             } ?: onChangeLanguage(selectLanguage?.code)
                         } else {
@@ -237,14 +253,29 @@ fun LanguageScreen(
         if (isReadyNextScreen) {
             if (appViewModel.isCheckADS()) {
                 activity?.let {
-                    InterADS.showInterstitialAd(it) {
-                        onChangeLanguage(selectLanguage?.code)
+                    if (InterADS.isAdReady()) {
+                        InterADS.showInterstitialAd(it) {
+                            onChangeLanguage(selectLanguage?.code)
+                        }
+                    } else {
+                        isShowDialogLoadAds = true
+                        scope.launch {
+                            delay(2000)
+                            isShowDialogLoadAds = false
+                            InterADS.showInterstitialAd(it) {
+                                onChangeLanguage(selectLanguage?.code)
+                            }
+                        }
                     }
                 } ?: onChangeLanguage(selectLanguage?.code)
             } else {
                 onChangeLanguage(selectLanguage?.code)
             }
         }
+    }
+
+    if (isShowDialogLoadAds) {
+        DialogLoadADS(onDismissRequest = { isShowDialogLoadAds = false })
     }
 }
 
