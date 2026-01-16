@@ -25,9 +25,9 @@ import awm.dev.volume8d_vuvqnphuc.utils.nav.LanguageRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.MainRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.NavAction
 import awm.dev.volume8d_vuvqnphuc.utils.nav.SplashRoute
-import com.example.datatransfer.utils.language.Constants.listLanguageApp
-import com.example.datatransfer.utils.language.ManagerSaveLocal
-import com.example.datatransfer.utils.language.changeLanguage
+import awm.dev.volume8d_vuvqnphuc.utils.language.Constants.listLanguageApp
+import awm.dev.volume8d_vuvqnphuc.utils.language.ManagerSaveLocal
+import awm.dev.volume8d_vuvqnphuc.utils.language.changeLanguage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

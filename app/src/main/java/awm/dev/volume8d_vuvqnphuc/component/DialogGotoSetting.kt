@@ -13,11 +13,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import awm.dev.volume8d_vuvqnphuc.R
 
 @Composable
 fun DialogGotoSetting(
@@ -35,19 +37,22 @@ fun DialogGotoSetting(
                         start = Offset(0f, 0f)
                     )
                 )
-                .border(BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)), RoundedCornerShape(28.dp))
+                .border(
+                    BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)),
+                    RoundedCornerShape(28.dp)
+                )
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Permission Required",
+                text = stringResource(R.string.permission_required),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Please grant the necessary permissions in settings to continue.",
+                text = stringResource(R.string.please_grant_the_necessary_permissions_in_settings_to_continue),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = Color.White.copy(alpha = 0.7f)
@@ -58,22 +63,10 @@ fun DialogGotoSetting(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = onDismissRequest) {
+                TextButton(onClick = onGoToSettings) {
                     Text(
-                        text = "Cancel",
+                        text = stringResource(R.string.go_to_settings),
                         color = Color.White.copy(alpha = 0.9f),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                ButtonCommonContent(
-                    paddingHorizontal = 24,
-                    paddingVertical = 10,
-                    modifier = Modifier,
-                    onClick = onGoToSettings
-                ) {
-                    Text(
-                        text = "Setting",
-                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 }

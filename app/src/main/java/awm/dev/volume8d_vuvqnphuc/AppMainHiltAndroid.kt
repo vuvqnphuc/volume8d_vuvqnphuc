@@ -3,8 +3,8 @@ package awm.dev.volume8d_vuvqnphuc
 import android.app.Application
 import android.util.Log
 import awm.dev.volume8d_vuvqnphuc.data.local.LANG
-import com.example.datatransfer.utils.language.ManagerSaveLocal
-import com.example.datatransfer.utils.language.changeLanguage
+import awm.dev.volume8d_vuvqnphuc.utils.language.ManagerSaveLocal
+import awm.dev.volume8d_vuvqnphuc.utils.language.changeLanguage
 import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.HiltAndroidApp
 

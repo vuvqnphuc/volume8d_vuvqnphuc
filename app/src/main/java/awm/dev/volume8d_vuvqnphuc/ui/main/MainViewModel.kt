@@ -64,6 +64,9 @@ class MainViewModel @Inject constructor(
     private val _permissionDeniedCount = MutableStateFlow(0)
     val permissionDeniedCount: StateFlow<Int> = _permissionDeniedCount.asStateFlow()
 
+    private val _pendingDeleteIntent = MutableStateFlow<android.content.IntentSender?>(null)
+    val pendingDeleteIntent: StateFlow<android.content.IntentSender?> = _pendingDeleteIntent.asStateFlow()
+
 
     // Audio Effects
     private var bassBoost: android.media.audiofx.BassBoost? = null
@@ -79,11 +82,23 @@ class MainViewModel @Inject constructor(
 
     fun removeMusic(music: MusicFile) {
         viewModelScope.launch(Dispatchers.IO) {
-            musicRepository.removeMusic(music)
-            // Reload the list - this will trigger initializePreset if no files left
-            val files = musicRepository.getAllMusicFiles()
-            _musicFiles.value = files
+            when (val result = musicRepository.removeMusic(music)) {
+                is awm.dev.volume8d_vuvqnphuc.data.repository.DeleteResult.Success -> {
+                    val files = musicRepository.getAllMusicFiles()
+                    _musicFiles.value = files
+                }
+                is awm.dev.volume8d_vuvqnphuc.data.repository.DeleteResult.RequiresPermission -> {
+                    _pendingDeleteIntent.value = result.intentSender
+                }
+                is awm.dev.volume8d_vuvqnphuc.data.repository.DeleteResult.Error -> {
+                    // Handle error if needed
+                }
+            }
         }
+    }
+
+    fun resetPendingDeleteIntent() {
+        _pendingDeleteIntent.value = null
     }
 
     fun incrementPermissionDeniedCount() {

@@ -13,11 +13,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import awm.dev.volume8d_vuvqnphuc.R
 
 @Composable
 fun DialogExitApp(
@@ -35,19 +37,22 @@ fun DialogExitApp(
                         start = Offset(0f, 0f)
                     )
                 )
-                .border(BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)), RoundedCornerShape(28.dp))
+                .border(
+                    BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)),
+                    RoundedCornerShape(28.dp)
+                )
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Exit App",
+                text = stringResource(R.string.exit_app),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Are you sure you want to exit the application?",
+                text = stringResource(R.string.are_you_sure_you_want_to_exit_the_application),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = Color.White.copy(alpha = 0.7f)
@@ -60,7 +65,7 @@ fun DialogExitApp(
             ) {
                 TextButton(onClick =onConfirmation ) {
                     Text(
-                        text = "Exit",
+                        text = stringResource(R.string.exit),
                         color = Color.White.copy(alpha = 0.9f),
                         fontWeight = FontWeight.Bold
                     )
@@ -72,7 +77,7 @@ fun DialogExitApp(
                     onClick =  onDismissRequest
                 ) {
                     Text(
-                        text = "Cancel",
+                        text = stringResource(R.string.cancel),
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )

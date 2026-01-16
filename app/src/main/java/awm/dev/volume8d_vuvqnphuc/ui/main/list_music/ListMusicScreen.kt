@@ -142,6 +142,23 @@ fun ListMusicScreen(
         )
     }
 
+    val pendingDeleteIntent by viewModel.pendingDeleteIntent.collectAsState()
+    val intentSenderLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            viewModel.loadMusic()
+        }
+        viewModel.resetPendingDeleteIntent()
+    }
+
+    LaunchedEffect(pendingDeleteIntent) {
+        pendingDeleteIntent?.let {
+            val intentSenderRequest = androidx.activity.result.IntentSenderRequest.Builder(it).build()
+            intentSenderLauncher.launch(intentSenderRequest)
+        }
+    }
+
     var musicToDelete by remember { mutableStateOf<MusicFile?>(null) }
 
     if (musicToDelete != null) {

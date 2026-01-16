@@ -16,12 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import awm.dev.volume8d_vuvqnphuc.R
 
 @Composable
 fun DialogCheckInternet(
@@ -40,19 +42,22 @@ fun DialogCheckInternet(
                         start = Offset(0f, 0f)
                     )
                 )
-                .border(BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)), RoundedCornerShape(28.dp))
+                .border(
+                    BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)),
+                    RoundedCornerShape(28.dp)
+                )
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "No Internet Connection",
+                text = stringResource(R.string.no_internet_connection),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please check your internet connection and try again.",
+                text = stringResource(R.string.please_check_your_internet_connection_and_try_again),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = Color.White.copy(alpha = 0.7f)
@@ -67,32 +72,14 @@ fun DialogCheckInternet(
                     paddingHorizontal = 0,
                     paddingVertical = 12,
                     modifier = Modifier.weight(1f),
-                    onClick = onTryAgain
+                    onClick = onGoToSetting
                 ) {
                     Text(
-                        text = "Try Again",
+                        text = stringResource(R.string.go_to_settings),
                         color = Color.Black,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1
-                    )
-                }
-
-                Spacer(modifier = Modifier.size(12.dp))
-
-                ButtonCommonContent(
-                    paddingHorizontal = 0,
-                    paddingVertical = 12,
-                    modifier = Modifier.weight(1f),
-                    onClick = onGoToSetting
-                ) {
-                    Text(
-                        text = "Go to Settings",
-                        color = Color.White,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        modifier = Modifier.basicMarquee()
                     )
                 }
             }

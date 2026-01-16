@@ -1,4 +1,4 @@
-package com.example.datatransfer.utils.language
+package awm.dev.volume8d_vuvqnphuc.utils.language
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat

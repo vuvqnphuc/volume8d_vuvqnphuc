@@ -3,10 +3,10 @@ package awm.dev.volume8d_vuvqnphuc.ui.language
 import androidx.lifecycle.ViewModel
 import awm.dev.volume8d_vuvqnphuc.data.local.LANG
 import awm.dev.volume8d_vuvqnphuc.data.local.Language
-import com.example.datatransfer.utils.language.ManagerSaveLocal
-import com.example.datatransfer.utils.language.changeLanguage
-import com.example.datatransfer.utils.language.getLanguageFlag
-import com.example.datatransfer.utils.language.getLanguageName
+import awm.dev.volume8d_vuvqnphuc.utils.language.ManagerSaveLocal
+import awm.dev.volume8d_vuvqnphuc.utils.language.changeLanguage
+import awm.dev.volume8d_vuvqnphuc.utils.language.getLanguageFlag
+import awm.dev.volume8d_vuvqnphuc.utils.language.getLanguageName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

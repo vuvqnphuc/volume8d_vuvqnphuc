@@ -1,6 +1,11 @@
 package awm.dev.volume8d_vuvqnphuc.data.repository
 
+import android.app.RecoverableSecurityException
+import android.content.ContentUris
 import android.content.Context
+import android.content.IntentSender
+import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import awm.dev.volume8d_vuvqnphuc.R
 import awm.dev.volume8d_vuvqnphuc.data.local.MusicDao
@@ -9,6 +14,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+sealed class DeleteResult {
+    object Success : DeleteResult()
+    data class RequiresPermission(val intentSender: IntentSender) : DeleteResult()
+    data class Error(val message: String) : DeleteResult()
+}
+
 class MusicRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val musicDao: MusicDao
@@ -16,7 +27,6 @@ class MusicRepository @Inject constructor(
     suspend fun getAllMusicFiles(): List<MusicFile> {
         val musicList = mutableListOf<MusicFile>()
         
-        // 1. Get files from MediaStore
         val mediaStoreFiles = mutableListOf<MusicFile>()
         val collection = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
@@ -61,14 +71,11 @@ class MusicRepository @Inject constructor(
             e.printStackTrace()
         }
 
-        // 2. Get files from Room DB
         val dbFiles = musicDao.getAllMusicSync()
 
-        // 3. Combine and check if empty
         val combined = dbFiles + mediaStoreFiles
         
         if (combined.isEmpty()) {
-            // Recreate preset if NO files found anywhere
             initializePreset()
             return musicDao.getAllMusicSync()
         }
@@ -85,7 +92,7 @@ class MusicRepository @Inject constructor(
     private suspend fun initializePreset() {
         val path = "android.resource://${context.packageName}/raw/file_music"
         val preset = MusicFile(
-            name = "VIETNAM MASHAP",
+            name = context.getString(R.string.mikenco_trend_remix),
             duration = "05:48",
             path = path,
             isPreset = true
@@ -93,32 +100,55 @@ class MusicRepository @Inject constructor(
         musicDao.insertMusic(preset)
     }
 
-    suspend fun removeMusic(music: MusicFile) {
-        // Delete from Room DB if it exists there
+    suspend fun removeMusic(music: MusicFile): DeleteResult {
         musicDao.deleteMusic(music)
 
-        // If it's not a preset, delete from device
         if (!music.isPreset) {
             try {
-                // Delete from filesystem
-                val file = java.io.File(music.path)
-                if (file.exists()) {
-                    file.delete()
+                val uri = if (music.id > 0) {
+                    android.content.ContentUris.withAppendedId(
+                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                        music.id
+                    )
+                } else {
+                     null
                 }
 
-                // Delete from MediaStore to update system database
-                val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                val selection = "${MediaStore.Audio.Media.DATA} = ?"
-                val selectionArgs = arrayOf(music.path)
-                context.contentResolver.delete(uri, selection, selectionArgs)
+                if (uri != null) {
+                    try {
+                        context.contentResolver.delete(uri, null, null)
+                    } catch (securityException: SecurityException) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            val deleteRequest = MediaStore.createDeleteRequest(
+                                context.contentResolver,
+                                listOf(uri)
+                            ).intentSender
+                            return DeleteResult.RequiresPermission(deleteRequest)
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            val recoverableSecurityException = securityException as? RecoverableSecurityException
+                                ?: throw securityException
+                            return DeleteResult.RequiresPermission(recoverableSecurityException.userAction.actionIntent.intentSender)
+                        } else {
+                            throw securityException
+                        }
+                    }
+                } else {
+                    val file = java.io.File(music.path)
+                    if (file.exists()) {
+                        file.delete()
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
+                return DeleteResult.Error(e.message ?: "Unknown error")
             }
         }
 
-        // Check if anything is left. If not, initializePreset will be called in the next load.
-        // Or we can just call it here if we want immediate effect.
-        // Since loadMusic in ViewModel calls getAllMusicFiles, and that check is already there,
-        // it should be fine. But let's be explicit if we want to return the updated list.
+        val remainingMusic = getAllMusicFiles()
+        if (remainingMusic.isEmpty()) {
+            initializePreset()
+        }
+        
+        return DeleteResult.Success
     }
 }

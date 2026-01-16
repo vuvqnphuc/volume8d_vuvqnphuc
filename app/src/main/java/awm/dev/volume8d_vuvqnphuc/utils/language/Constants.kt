@@ -1,4 +1,4 @@
-package com.example.datatransfer.utils.language
+package awm.dev.volume8d_vuvqnphuc.utils.language
 
 import awm.dev.volume8d_vuvqnphuc.data.local.LANG
 import awm.dev.volume8d_vuvqnphuc.data.local.Language

@@ -3,9 +3,17 @@ package awm.dev.volume8d_vuvqnphuc.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +32,7 @@ import awm.dev.volume8d_vuvqnphuc.R
 @Composable
 fun DialogDeleteFile(
     onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit
+    onConfirmation: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Column(
@@ -37,19 +45,22 @@ fun DialogDeleteFile(
                         start = Offset(0f, 0f)
                     )
                 )
-                .border(BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)), RoundedCornerShape(28.dp))
+                .border(
+                    BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)),
+                    RoundedCornerShape(28.dp)
+                )
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Xóa tệp",
+                text = stringResource(R.string.delete_audio_file),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Bạn có chắc chắn muốn xóa tệp này khỏi thiết bị không?",
+                text = stringResource(R.string.are_you_sure_you_want_to_delete_this_file_from_your_device),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = Color.White.copy(alpha = 0.7f)
@@ -62,7 +73,7 @@ fun DialogDeleteFile(
             ) {
                 TextButton(onClick = onDismissRequest) {
                     Text(
-                        text = "Hủy",
+                        text = stringResource(R.string.cancel),
                         color = Color.White.copy(alpha = 0.9f),
                         fontWeight = FontWeight.Bold
                     )
@@ -74,7 +85,7 @@ fun DialogDeleteFile(
                     onClick = onConfirmation
                 ) {
                     Text(
-                        text = "Xóa",
+                        text = stringResource(R.string.delete),
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
