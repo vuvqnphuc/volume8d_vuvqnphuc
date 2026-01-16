@@ -1,6 +1,8 @@
 package awm.dev.volume8d_vuvqnphuc.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -23,8 +25,10 @@ fun DialogExitApp(
     Dialog(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(Color.White)
+                .fillMaxWidth(0.95f)
+                .clip(RoundedCornerShape(28.dp))
+                .background(Color.White.copy(alpha = 0.15f))
+                .border(BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)), RoundedCornerShape(28.dp))
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -32,24 +36,25 @@ fun DialogExitApp(
                 text = "Exit App",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Are you sure you want to exit the application?",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
-                color = Color.Gray
+                color = Color.White.copy(alpha = 0.7f)
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 TextButton(onClick = onDismissRequest) {
                     Text(
                         text = "Cancel",
-                        color = Color.Gray,
+                        color = Color.White.copy(alpha = 0.9f),
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -69,8 +74,9 @@ fun DialogExitApp(
         }
     }
 }
+
 @Composable
-@Preview
+@Preview(showBackground = true, backgroundColor = 0xFFEE0979)
 fun DialogExitAppP(){
     DialogExitApp(
         onDismissRequest = {},
