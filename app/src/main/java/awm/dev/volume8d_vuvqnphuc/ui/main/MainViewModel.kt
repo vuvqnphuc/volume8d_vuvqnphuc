@@ -55,6 +55,10 @@ class MainViewModel @Inject constructor(
     private var mediaPlayer: MediaPlayer? = null
     private var progressJob: Job? = null
     private var effect8DJob: Job? = null
+    
+    private val _permissionDeniedCount = MutableStateFlow(0)
+    val permissionDeniedCount: StateFlow<Int> = _permissionDeniedCount.asStateFlow()
+
 
     // Audio Effects
     private var bassBoost: android.media.audiofx.BassBoost? = null
@@ -73,6 +77,11 @@ class MainViewModel @Inject constructor(
         currentList.remove(music)
         _musicFiles.value = currentList
     }
+
+    fun incrementPermissionDeniedCount() {
+        _permissionDeniedCount.value++
+    }
+
 
     fun playMusic(music: MusicFile) {
         if (_currentMusic.value == music && mediaPlayer != null) {

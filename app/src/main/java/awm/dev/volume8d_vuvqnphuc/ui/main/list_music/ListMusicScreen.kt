@@ -1,11 +1,17 @@
 package awm.dev.volume8d_vuvqnphuc.ui.main.list_music
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
@@ -46,6 +52,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -61,6 +68,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.R
 import awm.dev.volume8d_vuvqnphuc.data.model.MusicFile
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainViewModel
+import awm.dev.volume8d_vuvqnphuc.component.DialogGotoSetting
 
 @Composable
 fun ListMusicScreen(
@@ -69,32 +77,68 @@ fun ListMusicScreen(
 ) {
     val context = LocalContext.current
     val musicFiles by viewModel.musicFiles.collectAsState()
+    val permissionDeniedCount by viewModel.permissionDeniedCount.collectAsState()
+    var showDialogSetting by remember { mutableStateOf(false) }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (isGranted) {
                 viewModel.loadMusic()
+            } else {
+                viewModel.incrementPermissionDeniedCount()
             }
         }
     )
 
-    LaunchedEffect(Unit) {
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    val permission = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Manifest.permission.READ_MEDIA_AUDIO
         } else {
             Manifest.permission.READ_EXTERNAL_STORAGE
         }
+    }
 
-        if (ContextCompat.checkSelfPermission(
-                context,
-                permission
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            viewModel.loadMusic()
-        } else {
-            permissionLauncher.launch(permission)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+                    viewModel.loadMusic()
+                }
+            }
         }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    LaunchedEffect(permissionDeniedCount) {
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (permissionDeniedCount > 0 && permissionDeniedCount < 2) {
+                permissionLauncher.launch(permission)
+            } else if (permissionDeniedCount >= 2) {
+                showDialogSetting = true
+            } else {
+                permissionLauncher.launch(permission)
+            }
+        } else {
+            viewModel.loadMusic()
+        }
+    }
+
+    if (showDialogSetting) {
+        DialogGotoSetting(
+            onDismissRequest = { showDialogSetting = false },
+            onGoToSettings = {
+                showDialogSetting = false
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", context.packageName, null)
+                }
+                context.startActivity(intent)
+            }
+        )
     }
 
     var searchQuery by remember { mutableStateOf("") }
