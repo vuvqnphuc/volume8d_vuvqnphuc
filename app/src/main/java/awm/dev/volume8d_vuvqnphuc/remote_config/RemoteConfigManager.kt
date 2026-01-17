@@ -23,6 +23,7 @@ class RemoteConfigManager @Inject constructor() {
             // OPEN APP
             "open_app" to "",
             // BANNER
+            "banner_language" to "",
             "banner_music" to "",
             "banner_list_music" to "",
             "banner_volume" to "",
@@ -51,46 +52,51 @@ class RemoteConfigManager @Inject constructor() {
     }
 
     // BANNER
+    fun setBannerLanguage(): String {
+        val BannerLanguage = remoteConfig.getString("banner_language")
+        Log.e("log1", " : BannerLanguage ")
+        return BannerLanguage
+    }
     fun setBannerMusic(): String {
         val BannerMusic = remoteConfig.getString("banner_music")
-        Log.e("log1", "adUnitId: BannerMusic ")
+        Log.e("log1", " : BannerMusic ")
         return BannerMusic
     }
 
     fun setBannerListMusic(): String {
         val BannerListMusic = remoteConfig.getString("banner_list_music")
-        Log.e("log1", "adUnitId: BannerListMusic ")
+        Log.e("log1", " : BannerListMusic ")
         return BannerListMusic
     }
 
     fun setBannerVolume(): String {
         val BannerVolume = remoteConfig.getString("banner_volume")
-        Log.e("log1", "adUnitId: BannerVolume ")
+        Log.e("log1", " : BannerVolume ")
         return BannerVolume
     }
 
     fun setBannerSetting(): String {
         val BannerSetting = remoteConfig.getString("banner_setting")
-        Log.e("log1", "adUnitId: BannerSetting")
+        Log.e("log1", " : BannerSetting")
         return BannerSetting
     }
 
     // INTER
     fun setInterListMusicMenu(): String {
         val InterListMusicMenu = remoteConfig.getString("inter_list_music_menu")
-        Log.e("log1", "adUnitId: InterListMusicMenu ")
+        Log.e("log1", " : InterListMusicMenu ")
         return InterListMusicMenu
     }
 
     fun setInterDoneLanguage(): String {
         val InterDoneLanguage = remoteConfig.getString("inter_done_language")
-        Log.e("log1", "adUnitId: InterDoneLanguage ")
+        Log.e("log1", " : InterDoneLanguage ")
         return InterDoneLanguage
     }
 
     fun setOpenApp(): String {
         val openApp = remoteConfig.getString("open_app")
-        Log.e("log1", "adUnitId: openApp ")
+        Log.e("log1", " : openApp ")
         return openApp
     }
 }

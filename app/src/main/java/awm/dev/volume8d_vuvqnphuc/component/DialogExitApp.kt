@@ -70,7 +70,7 @@ fun DialogExitApp(
                         fontWeight = FontWeight.Bold
                     )
                 }
-                ButtonCommonContent(
+                ButtonCommonClick(
                     paddingHorizontal = 24,
                     paddingVertical = 10,
                     modifier = Modifier,
@@ -78,7 +78,7 @@ fun DialogExitApp(
                 ) {
                     Text(
                         text = stringResource(R.string.cancel),
-                        color = Color.White,
+                        color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
                 }

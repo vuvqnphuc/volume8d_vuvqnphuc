@@ -1,17 +1,21 @@
 package awm.dev.volume8d_vuvqnphuc.ui.Instructions
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -28,6 +32,9 @@ import awm.dev.volume8d_vuvqnphuc.utils.system.clickableOnce
 fun InstructionsScreen(
     onBack: () -> Unit = {}
 ) {
+    BackHandler {
+        onBack()
+    }
     val instructions = listOf(
         InstructionData(
             title = stringResource(R.string.select_music_list),
@@ -72,14 +79,22 @@ fun InstructionsScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_back_screen),
-                    contentDescription = "Back",
+                Box(
                     modifier = Modifier
-                        .size(32.dp)
-                        .align(Alignment.CenterStart)
-                        .clickableOnce { onBack() }
-                )
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.1f))
+                        .clickableOnce { onBack() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back_screen),
+                        contentDescription = "Back",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                }
                 Text(
                     text = stringResource(R.string.instructions),
                     fontSize = 22.sp,

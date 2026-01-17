@@ -1,8 +1,6 @@
 package awm.dev.volume8d_vuvqnphuc.component
 
-import android.R.attr.onClick
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import awm.dev.volume8d_vuvqnphuc.utils.system.clickableOnce
 
 @Composable
-fun ButtonCommonCan(
+fun ButtonCommonClick(
     paddingHorizontal: Int,
     paddingVertical: Int,
     modifier: Modifier,

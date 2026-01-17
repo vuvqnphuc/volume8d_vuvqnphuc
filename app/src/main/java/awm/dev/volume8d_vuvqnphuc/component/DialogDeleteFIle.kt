@@ -78,7 +78,7 @@ fun DialogDeleteFile(
                         fontWeight = FontWeight.Bold
                     )
                 }
-                ButtonCommonCan(
+                ButtonCommonClick(
                     paddingHorizontal = 24,
                     paddingVertical = 10,
                     modifier = Modifier,

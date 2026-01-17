@@ -58,18 +58,17 @@ fun DialogGotoSetting(
                 color = Color.White.copy(alpha = 0.7f)
             )
             Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+            ButtonCommonClick(
+                paddingHorizontal = 24,
+                paddingVertical = 10,
+                modifier = Modifier,
+                onClick =  onGoToSettings
             ) {
-                TextButton(onClick = onGoToSettings) {
-                    Text(
-                        text = stringResource(R.string.go_to_settings),
-                        color = Color.White.copy(alpha = 0.9f),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = stringResource(R.string.go_to_settings),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

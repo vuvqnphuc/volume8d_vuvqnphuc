@@ -1,5 +1,7 @@
 package awm.dev.volume8d_vuvqnphuc.ui.language
 
+import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -37,22 +39,22 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import awm.dev.volume8d_vuvqnphuc.AppMainViewModel
-import awm.dev.volume8d_vuvqnphuc.component.ButtonCommonContent
+import awm.dev.volume8d_vuvqnphuc.component.ButtonCommonClick
+import awm.dev.volume8d_vuvqnphuc.component.DialogLoadADS
 import awm.dev.volume8d_vuvqnphuc.data.local.LANG
 import awm.dev.volume8d_vuvqnphuc.data.local.Language
+import awm.dev.volume8d_vuvqnphuc.remote_config.BannerADS
 import awm.dev.volume8d_vuvqnphuc.remote_config.InterADS
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import kotlinx.coroutines.delay
-import android.app.Activity
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import awm.dev.volume8d_vuvqnphuc.component.DialogLoadADS
 import kotlinx.coroutines.launch
 
 
@@ -62,7 +64,7 @@ fun LanguageScreen(
     listLanguage: List<Language>,
     language: Language?,
     onChangeLanguage: (LANG?) -> Unit,
-    appViewModel: AppMainViewModel = hiltViewModel()
+    appViewModel: AppMainViewModel = hiltViewModel(),
 ) {
 
     var selectLanguage by remember {
@@ -114,7 +116,8 @@ fun LanguageScreen(
                 .fillMaxWidth()
                 .padding(top = 6.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically
-        ) {
+        )
+        {
             Text(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 4.dp)
@@ -153,7 +156,7 @@ fun LanguageScreen(
                 )
             )
 
-            ButtonCommonContent(
+            ButtonCommonClick(
                 paddingHorizontal = 8,
                 paddingVertical = 4,
                 modifier = Modifier
@@ -215,7 +218,7 @@ fun LanguageScreen(
                     style = TextStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.W600,
-                        color = Color.White,
+                        color = Color.Black,
                     )
                 )
             }
@@ -227,7 +230,8 @@ fun LanguageScreen(
             modifier = Modifier
                 .weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        )
+        {
             items(
                 count = listLanguage.size
             ) { index ->
@@ -246,6 +250,20 @@ fun LanguageScreen(
                 Spacer(Modifier.height(24.dp))
             }
 
+        }
+        val adUnitId = appViewModel.getBannerLanguage()
+        Log.e("log1", "adUnitId:$adUnitId ")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color.White)
+                .border(0.5.dp, color = Color.Gray)
+                .padding(vertical = 10.dp)
+        ) {
+            BannerADS(
+                adUnitId = adUnitId,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 
@@ -298,9 +316,9 @@ fun LanguageItem(
 
     val bgBrush = remember(isSelected) {
         if (isSelected) {
-            Brush.linearGradient(listOf(Color.Black,Color.Black, Color(0xFFEE0979)))
+            Brush.linearGradient(listOf(Color.Black, Color.Black, Color(0xFFEE0979)))
         } else {
-            Brush.linearGradient(listOf(Color.Black,Color.Black))
+            Brush.linearGradient(listOf(Color.Black, Color.Black))
         }
     }
 

@@ -2,12 +2,9 @@ package awm.dev.volume8d_vuvqnphuc.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -63,25 +60,17 @@ fun DialogCheckInternet(
                 color = Color.White.copy(alpha = 0.7f)
             )
             Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            ButtonCommonClick(
+                paddingHorizontal = 24,
+                paddingVertical = 10,
+                modifier = Modifier,
+                onClick =  onGoToSetting
             ) {
-                ButtonCommonCan(
-                    paddingHorizontal = 0,
-                    paddingVertical = 12,
-                    modifier = Modifier.weight(1f),
-                    onClick = onGoToSetting
-                ) {
-                    Text(
-                        text = stringResource(R.string.go_to_settings),
-                        color = Color.Black,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1
-                    )
-                }
+                Text(
+                    text = stringResource(R.string.go_to_settings),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

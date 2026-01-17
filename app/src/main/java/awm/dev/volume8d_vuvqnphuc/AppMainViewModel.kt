@@ -54,6 +54,7 @@ class AppMainViewModel @Inject constructor(
     // ADS
     fun isCheckADS(): Boolean = remoteConfigManager.isCheckADS()
     fun getBannerMusic(): String = remoteConfigManager.setBannerMusic()
+    fun getBannerLanguage(): String = remoteConfigManager.setBannerLanguage()
     fun getBannerListMusic(): String = remoteConfigManager.setBannerListMusic()
     fun getBannerVolume(): String = remoteConfigManager.setBannerVolume()
     fun getBannerSetting(): String = remoteConfigManager.setBannerSetting()

@@ -48,9 +48,11 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 fun MainScreen(
     currentIndexTab: Int = 0,
     changeIndexTab: (Int) -> Unit,
-    onNavigateToLanguage: () -> Unit = {},
-    onNavigateToInstructions: () -> Unit = {},
-    appViewModel: AppMainViewModel = hiltViewModel()
+    onLanguageClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
+    onRateClick: () -> Unit = {},
+    onInstructionsClick: () -> Unit = {},
+    appViewModel: AppMainViewModel = hiltViewModel(),
 ) {
     val pagerState = rememberPagerState(initialPage = currentIndexTab) { 4 }
 
@@ -113,49 +115,17 @@ fun MainScreen(
                         changeIndexTab(1)
                     }
                 )
-
                 1 -> ListMusicScreen(
                     onNavigateToPlayer = {
                         changeIndexTab(0)
                     }
                 )
-
                 2 -> VolumeScreen()
                 3 -> SettingScreen(
-                    onLanguageClick = onNavigateToLanguage,
-                    onShareClick = {
-                        val sendIntent = android.content.Intent().apply {
-                            action = android.content.Intent.ACTION_SEND
-                            putExtra(
-                                android.content.Intent.EXTRA_TEXT,
-                                "https://play.google.com/store/apps/details?id=${context.packageName}"
-                            )
-                            type = "text/plain"
-                        }
-                        context.startActivity(
-                            android.content.Intent.createChooser(
-                                sendIntent,
-                                null
-                            )
-                        )
-                    },
-                    onRateClick = {
-                        val intent = android.content.Intent(
-                            android.content.Intent.ACTION_VIEW,
-                            android.net.Uri.parse("market://details?id=${context.packageName}")
-                        )
-                        try {
-                            context.startActivity(intent)
-                        } catch (e: android.content.ActivityNotFoundException) {
-                            context.startActivity(
-                                android.content.Intent(
-                                    android.content.Intent.ACTION_VIEW,
-                                    android.net.Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
-                                )
-                            )
-                        }
-                    },
-                    onInstructionsClick = onNavigateToInstructions
+                    onLanguageClick = onLanguageClick,
+                    onShareClick = onShareClick,
+                    onRateClick = onRateClick,
+                    onInstructionsClick = onInstructionsClick
                 )
             }
         }
@@ -232,6 +202,5 @@ fun MainScreenP() {
     MainScreen(
         currentIndexTab = 0,
         changeIndexTab = {},
-        onNavigateToLanguage = {}
     )
 }

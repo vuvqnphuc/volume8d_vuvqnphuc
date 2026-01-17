@@ -1,6 +1,9 @@
 package awm.dev.volume8d_vuvqnphuc
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -9,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.util.fastFirstOrNull
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,17 +21,15 @@ import awm.dev.volume8d_vuvqnphuc.ui.Instructions.InstructionsScreen
 import awm.dev.volume8d_vuvqnphuc.ui.language.LanguageScreen
 import awm.dev.volume8d_vuvqnphuc.ui.main.MainScreen
 import awm.dev.volume8d_vuvqnphuc.ui.splash.SplashScreen
+import awm.dev.volume8d_vuvqnphuc.utils.language.Constants.listLanguageApp
+import awm.dev.volume8d_vuvqnphuc.utils.language.ManagerSaveLocal
+import awm.dev.volume8d_vuvqnphuc.utils.language.changeLanguage
 import awm.dev.volume8d_vuvqnphuc.utils.nav.BaseRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.InstructionsRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.LanguageRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.MainRoute
 import awm.dev.volume8d_vuvqnphuc.utils.nav.NavAction
 import awm.dev.volume8d_vuvqnphuc.utils.nav.SplashRoute
-import awm.dev.volume8d_vuvqnphuc.utils.language.Constants.listLanguageApp
-import awm.dev.volume8d_vuvqnphuc.utils.language.ManagerSaveLocal
-import awm.dev.volume8d_vuvqnphuc.utils.language.changeLanguage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun AppMainNavHost(
@@ -37,7 +37,6 @@ fun AppMainNavHost(
     navAction: NavAction,
     startRouter: BaseRoute,
     context: Activity,
-    appViewModel: AppMainViewModel = hiltViewModel<AppMainViewModel>(),
 ) {
     val scopeNav = rememberCoroutineScope()
     NavHost(
@@ -47,9 +46,9 @@ fun AppMainNavHost(
         composable<SplashRoute> {
             SplashScreen(
                 nextScreen = {
-                    if (ManagerSaveLocal.getFirstOpen()){
+                    if (ManagerSaveLocal.getFirstOpen()) {
                         navAction.navToLanguageScreen(showFrom = SplashRoute.toString())
-                    }else{
+                    } else {
                         navAction.navToMainScreen()
                     }
                 }
@@ -97,10 +96,42 @@ fun AppMainNavHost(
             MainScreen(
                 currentIndexTab = selectedIndex,
                 changeIndexTab = { selectedIndex = it },
-                onNavigateToLanguage = {
+                onLanguageClick = {
                     navAction.navToLanguageScreen(showFrom = MainRoute.toString())
                 },
-                onNavigateToInstructions = {
+                onShareClick = {
+                    val sendIntent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "https://play.google.com/store/apps/details?id=${context.packageName}"
+                        )
+                        type = "text/plain"
+                    }
+                    context.startActivity(
+                        Intent.createChooser(
+                            sendIntent,
+                            null
+                        )
+                    )
+                },
+                onRateClick = {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=${context.packageName}")
+                    )
+                    try {
+                        context.startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+                            )
+                        )
+                    }
+                },
+                onInstructionsClick = {
                     navAction.navToInstructionsScreen()
                 }
             )
